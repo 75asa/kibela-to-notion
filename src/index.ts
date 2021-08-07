@@ -4,14 +4,7 @@ import { NotionRepository } from "./NotionRepository";
 import { getAllMetaData } from "./parser";
 import { RedisRepository } from "./RedisRepository";
 import { getUpdateProperties } from "./updateProp";
-
-const chunk = <T extends any[]>(targetArray: T, size: number): T[] => {
-  return targetArray.reduce((accArray, _, index) => {
-    return index % size
-      ? accArray
-      : [...accArray, targetArray.slice(index, index + size)];
-  }, [] as T[][]);
-};
+import { chunk } from "./utils";
 
 export const main = async () => {
   const notionRepo = new NotionRepository(Config.Notion.KEY);
@@ -19,7 +12,6 @@ export const main = async () => {
   const DATABASE = Config.Notion.DATABASE;
   const allMetaData = getAllMetaData();
   const allPrefix = allMetaData.map(item => item.prefixNumber);
-  // [0..99] [100..199] ...
   const chunkedAllPrefix = chunk(allPrefix, 100);
   const allPages = await Promise.all(
     chunkedAllPrefix.map(async chunkedPrefix => {

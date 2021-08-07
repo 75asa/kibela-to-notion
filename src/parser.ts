@@ -61,15 +61,4 @@ export const getAllMetaData = () => {
       meta,
     };
   });
-
-  // const metaMap = new Map<number, KibelaMetaData>();
-
-  // allDirent.forEach(file => {
-  //     const name = file.name
-  //     const meta = parser(path.resolve(dirPath, name));
-  //     const prefixNumber = Number(name.split("-")[0]);
-  //     metaMap.set(prefixNumber, meta);
-  // });
-
-  // return metaMap;
 };
