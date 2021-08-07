@@ -43,19 +43,33 @@ const parser = (fileName: string) => {
 
 export const getAllMetaData = () => {
   const dirPath = path.resolve(__dirname, "../notes");
-  const allDirent = fs.readdirSync(dirPath, {
-    encoding: "utf-8",
-    withFileTypes: true,
+  const allDirent = fs
+    .readdirSync(dirPath, {
+      encoding: "utf-8",
+      withFileTypes: true,
+    })
+    .filter(file => {
+      return file.name !== ".gitkeep";
+    });
+
+  return allDirent.map(file => {
+    const name = file.name;
+    const meta = parser(path.resolve(dirPath, name));
+    const prefixNumber = Number(name.split("-")[0]);
+    return {
+      prefixNumber,
+      meta,
+    };
   });
 
-  const metaMap = new Map<number, KibelaMetaData>();
+  // const metaMap = new Map<number, KibelaMetaData>();
 
-  allDirent.forEach(file => {
-      const name = file.name
-      const meta = parser(path.resolve(dirPath, name));
-      const prefixNumber = Number(name.split("-")[0]);
-      metaMap.set(prefixNumber, meta);
-  });
+  // allDirent.forEach(file => {
+  //     const name = file.name
+  //     const meta = parser(path.resolve(dirPath, name));
+  //     const prefixNumber = Number(name.split("-")[0]);
+  //     metaMap.set(prefixNumber, meta);
+  // });
 
-  return metaMap;
+  // return metaMap;
 };

@@ -12,4 +12,5 @@ export namespace Config {
     export const KEY = process.env.NOTION_KEY!;
     export const DATABASE = process.env.NOTION_DATABASE!;
   }
+  export namespace Redis {}
 }

@@ -4,3 +4,4 @@ yarn-error.*
 dist
 notes/*
 !.gitkeep
+data/

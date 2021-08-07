@@ -1,56 +1,51 @@
-import {
-  PropertyValue,
-  RichText,
-  TitlePropertyValue,
-} from "@notionhq/client/build/src/api-types";
 import { Config } from "./Config";
+import { getName, getPrefixNumber, isTitlePropertyValue } from "./notion/utils";
 import { NotionRepository } from "./NotionRepository";
 import { getAllMetaData } from "./parser";
+import { RedisRepository } from "./RedisRepository";
 import { getUpdateProperties } from "./updateProp";
 
-const isTitlePropertyValue = (
-  propValue: PropertyValue
-): propValue is TitlePropertyValue => {
-  return (propValue as TitlePropertyValue).type === "title";
+const chunk = (array: [], size: number) => {
+  return array.reduce((array, _value, index) => {
+    return index % size ? array : [...array, array.slice(index, index + size)];
+  }, []);
 };
 
-const getName = (titleList: RichText[]) => {
-  return titleList.reduce((acc, cur) => {
-    if (!("plain_text" in cur)) return acc;
-    return (acc += cur.plain_text);
-  }, "");
-};
-
-const getPrefixNumber = (url: string) => {
-  // https://www.notion.so/3590-_2019_05_09_kitagawa-1aaa4a1d50a0454d9669c6d8df95d591
-  const regex = /notion\.so\/([0-9]+)-+/;
-  if (!url.match(regex)) {
-    console.warn(`WARN: ${url}`);
-    return 0;
-  }
-  return Number(url.match(regex)![1]) ?? 0;
-};
-
-const main = async () => {
+export const main = async () => {
   const notionRepo = new NotionRepository(Config.Notion.KEY);
+  const redisRepo = new RedisRepository();
   const DATABASE = Config.Notion.DATABASE;
-  // TODO: ディレクトリをスキャン;
-  const allMeta = getAllMetaData();
-  const allPages = await notionRepo.getAllPageFromDatabase(DATABASE);
+  // [0..99] [100..199] ...
+  const allMetaData = getAllMetaData();
+  // const allPrefix = allMetaData.map(item => item.prefixNumber);
+  const allPrefix = allMetaData.map(item => item.prefixNumber);
+  const chunkedAllPrefix = chunk(allPrefix, 100) as number[][];
+  const allPages = await Promise.all(
+    chunkedAllPrefix.map(async chunkedPrefix => {
+      return await notionRepo.getAllPageFromDatabase(DATABASE, chunkedPrefix);
+    })
+  );
 
   await Promise.all(
-    allPages.map(async page => {
-      const nameProp = page.properties.Name;
-      if (!isTitlePropertyValue(nameProp)) return;
-      const name = getName(nameProp.title);
-      const url = page.url;
-      console.log({ name, url });
-      const no = getPrefixNumber(url);
-      if (!no) return;
-      if (!allMeta.has(no)) return;
-      const meta = allMeta.get(no);
-      if (!meta) return;
-      await notionRepo.updatePage(page, getUpdateProperties(meta));
+    allPages.map(async pageMap => {
+      await Promise.all(
+        pageMap.map(async page => {
+          const nameProp = page.properties.Name;
+          if (!isTitlePropertyValue(nameProp)) return;
+          const name = getName(nameProp.title);
+          const url = page.url;
+          console.log({ name, url });
+          const no = getPrefixNumber(url);
+          if (!no) return;
+          const metaData = allMetaData.find(item => item.prefixNumber === no);
+          if (!metaData) return;
+          await notionRepo.updatePage(
+            page,
+            await getUpdateProperties(metaData.meta, redisRepo),
+            redisRepo
+          );
+        })
+      );
     })
   );
 };

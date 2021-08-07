@@ -1,21 +1,33 @@
-import {
-  SelectOption,
-  SelectOptionWithName,
-  RichText,
-} from "@notionhq/client/build/src/api-types";
+import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
 import { KibelaMetaData } from "./parser";
+import { RedisRepository } from "./RedisRepository";
 
 interface UpdatePropertiesProp {
   author: SelectOption;
-  contributors: SelectOptionWithName[];
-  folders: SelectOptionWithName[];
-  groups: SelectOptionWithName[];
+  contributors: SelectOption[];
+  folders: SelectOption[];
+  groups: SelectOption[];
   comments: RichText[];
 }
 
-export const getUpdateProperties = (
-  content: KibelaMetaData
-): UpdatePropertiesProp => {
+export const getUpdateProperties = async (
+  content: KibelaMetaData,
+  redisRepo: RedisRepository
+): Promise<UpdatePropertiesProp> => {
+  const folders = await Promise.all(
+    content.folders.map(async folder => {
+      const folderId = await redisRepo.get(`folders:${folder}`);
+      if (!folderId) return { name: folder };
+      return { id: folderId! };
+    })
+  );
+  const groups = await Promise.all(
+    content.groups.map(async group => {
+      const groupId = await redisRepo.get(`groups${group}`);
+      if (!groupId) return { name: group };
+      return { id: groupId };
+    })
+  );
   return {
     author: {
       name: content.author,
@@ -23,12 +35,8 @@ export const getUpdateProperties = (
     contributors: content.contributors.map(user => {
       return { name: user };
     }),
-    folders: content.folders.map(folder => {
-      return { name: folder };
-    }),
-    groups: content.groups.map(group => {
-      return { name: group };
-    }),
+    folders,
+    groups,
     comments: content.comments.map(comment => {
       const author = comment.author;
       const content = comment.content;
