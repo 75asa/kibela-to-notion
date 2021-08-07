@@ -60,11 +60,6 @@ export class NotionRepository {
         archived: false,
         properties: updateProps,
       });
-      // update 後の page を取得
-      // page.properties を回して Name 以外の prop value を取得
-      // redis に Value と ID を書き込む
-      // updateProp.ts で まず name から prop の ID があるか調べる
-      // ある場合は ID　で、ない場合は name で指定し、更新後に redis に登録
       const ignorePropNames = ["Name", "comments", "contributors", "author"];
       for (const propKey in updatedPage.properties) {
         if (ignorePropNames.includes(propKey)) continue;

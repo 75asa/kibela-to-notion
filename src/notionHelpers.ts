@@ -1,12 +1,8 @@
 import {
   PropertyValue,
   RichText,
-  SelectOption,
   TitlePropertyValue,
 } from "@notionhq/client/build/src/api-types";
-
-type SelectMenuID = string;
-type SelectMenuName = string;
 
 export const isTitlePropertyValue = (
   propValue: PropertyValue
@@ -28,8 +24,4 @@ export const getPrefixNumber = (url: string) => {
     return 0;
   }
   return Number(url.match(regex)![1]) ?? 0;
-};
-
-export const makeSelectMenuMap = (selectOption: SelectOption) => {
-
 };

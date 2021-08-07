@@ -1,5 +1,5 @@
 import { Config } from "./Config";
-import { getName, getPrefixNumber, isTitlePropertyValue } from "./notion/utils";
+import { getName, getPrefixNumber, isTitlePropertyValue } from "./notionHelpers";
 import { NotionRepository } from "./NotionRepository";
 import { getAllMetaData } from "./parser";
 import { RedisRepository } from "./RedisRepository";
@@ -37,12 +37,12 @@ export const main = async () => {
             redisRepo
           );
         })
-      ).finally(() => {
-        console.log("Finished updating page");
-        process.exit();
-      });
+      );
     })
-  );
+  ).finally(() => {
+    console.log("Finished updating page");
+    process.exit();
+  });
 };
 
 main();
