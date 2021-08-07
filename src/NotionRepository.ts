@@ -23,7 +23,7 @@ export class NotionRepository {
               return {
                 property: "Name",
                 text: {
-                  starts_with: String(prefix),
+                  starts_with: `${String(prefix)}-`,
                 },
               };
             }),
@@ -65,8 +65,6 @@ export class NotionRepository {
       // redis に Value と ID を書き込む
       // updateProp.ts で まず name から prop の ID があるか調べる
       // ある場合は ID　で、ない場合は name で指定し、更新後に redis に登録
-      console.log({ updatedPage });
-      console.dir(updateProps);
       const ignorePropNames = ["Name", "comments", "contributors", "author"];
       for (const propKey in updatedPage.properties) {
         if (ignorePropNames.includes(propKey)) continue;
@@ -78,12 +76,9 @@ export class NotionRepository {
           await redisRepo.sadd(`${propKey}:${name}`, id);
         }
       }
-      console.log({ updateProps });
       console.dir(updateProps);
     } catch (e) {
       throw e;
-    } finally {
-      console.log("finished !!");
     }
   }
 }

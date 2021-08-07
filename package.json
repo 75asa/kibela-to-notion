@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "ts-node": "ts-node",
-    "start:dev": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "build": "tsc -p .",
     "test": "jest"
   },
