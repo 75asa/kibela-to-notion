@@ -3,6 +3,7 @@ services:
   redis:
     container_name: "kibela-to-notion-redis"
     image: "redis:latest"
+    restart: always
     ports:
       - "6379:6379"
     volumes:

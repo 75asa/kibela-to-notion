@@ -1,8 +1,8 @@
 import { Config } from "./Config";
 import { getName, getPrefixNumber, isTitlePropertyValue } from "./notionHelpers";
-import { NotionRepository } from "./NotionRepository";
-import { getAllMetaData } from "./parser";
-import { RedisRepository } from "./RedisRepository";
+import { NotionRepository } from "./repository/NotionRepository";
+import { getAllMetaData } from "./metaParser";
+import { RedisRepository } from "./repository/RedisRepository";
 import { getUpdateProperties } from "./updateProp";
 import { chunk } from "./utils";
 

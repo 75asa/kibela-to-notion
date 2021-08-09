@@ -1,6 +1,6 @@
 import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
-import { KibelaMetaData } from "./parser";
-import { RedisRepository } from "./RedisRepository";
+import { KibelaMetaData } from "./metaParser";
+import { RedisRepository } from "./repository/RedisRepository";
 
 interface UpdatePropertiesProp {
   author: SelectOption;
