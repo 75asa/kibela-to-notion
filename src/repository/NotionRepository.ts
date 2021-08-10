@@ -60,7 +60,7 @@ export class NotionRepository {
         archived: false,
         properties: updateProps,
       });
-      const ignorePropNames = ["Name", "comments", "contributors", "author"];
+      const ignorePropNames = ["Name", "comments"];
       for (const propKey in updatedPage.properties) {
         if (ignorePropNames.includes(propKey)) continue;
         const propValue = updatedPage.properties[propKey];

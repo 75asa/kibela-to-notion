@@ -15,6 +15,9 @@ export namespace Config {
   export namespace Notion {
     export const KEY = process.env.NOTION_KEY!;
     export const DATABASE = process.env.NOTION_DATABASE!;
+    export const LOG_LEVEL = process.env.REDIS_LOG_LEVEL || "DEBUG";
   }
-  export namespace Redis {}
+  export namespace Redis {
+    export const SHOW_FRIENDLY_ERROR_STACK = true;
+  }
 }

@@ -7,8 +7,16 @@ export class RedisRepository {
     this.redis = new IORedis(options);
   }
 
-  async get(key: string) {
-    return await this.redis.get(key);
+  async getKey(key: string) {
+    let storedKey;
+    try {
+      storedKey = await this.redis.get(key);
+      console.log({ storedKey });
+    } catch (e) {
+      throw new Error(`Error getting key ${key} from redis`);
+    }
+
+    return storedKey;
   }
 
   async sadd(key: string, value: string) {

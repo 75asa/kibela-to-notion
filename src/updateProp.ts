@@ -15,26 +15,33 @@ export const getUpdateProperties = async (
   redisRepo: RedisRepository
 ): Promise<UpdatePropertiesProp> => {
   const folders = await Promise.all(
-    content.folders.map(async folder => {
-      const folderId = await redisRepo.get(`folders:${folder}`);
-      if (!folderId) return { name: folder };
-      return { id: folderId! };
+    content.folders.map(async name => {
+      const id = await redisRepo.getKey(`folders:${name}`);
+      if (!id) return { name };
+      return { id };
     })
   );
   const groups = await Promise.all(
-    content.groups.map(async group => {
-      const groupId = await redisRepo.get(`groups${group}`);
-      if (!groupId) return { name: group };
-      return { id: groupId };
+    content.groups.map(async name => {
+      const id = await redisRepo.getKey(`groups:${name}`);
+      if (!id) return { name };
+      return { id };
+    })
+  );
+  const author = await redisRepo.getKey(`author:${content.author}`).then(id => {
+    if (!id) return { name: content.author };
+    return { id };
+  });
+  const contributors = await Promise.all(
+    content.contributors.map(async name => {
+      const id = await redisRepo.getKey(`contributors:${name}`);
+      if (!id) return { name };
+      return { id };
     })
   );
   return {
-    author: {
-      name: content.author,
-    },
-    contributors: content.contributors.map(user => {
-      return { name: user };
-    }),
+    author,
+    contributors,
     folders,
     groups,
     comments: content.comments.map(comment => {
