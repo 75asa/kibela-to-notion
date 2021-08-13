@@ -21,7 +21,7 @@ export class RedisRepository {
 
   async sadd(key: string, value: string) {
     try {
-      await this.redis.sadd(key, value);
+      await this.redis.sadd(key, value).then(data => console.log({ data }));
     } catch (e) {
       throw e;
     }

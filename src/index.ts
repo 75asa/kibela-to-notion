@@ -14,6 +14,7 @@ export const main = async () => {
   const notionRepo = new NotionRepository(Config.Notion.KEY);
   const redisRepo = new RedisRepository({
     showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
+    noDelay: Config.Redis.NO_DELAY,
   });
   const DATABASE = Config.Notion.DATABASE;
   const allMetaData = getAllMetaData();
@@ -27,7 +28,7 @@ export const main = async () => {
   let successCount = 0;
   await Promise.all(
     allPages.map(async pageMap => {
-      await Promise.all(
+      return await Promise.all(
         pageMap.map(async page => {
           const nameProp = page.properties.Name;
           if (!isTitlePropertyValue(nameProp)) return;
@@ -41,7 +42,7 @@ export const main = async () => {
             metaData.meta,
             redisRepo
           );
-          console.dir(updateProps);
+          console.dir({ updateProps }, { depth: null });
           await notionRepo
             .updatePage(page, updateProps, redisRepo)
             .finally(() => {
