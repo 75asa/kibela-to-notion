@@ -54,9 +54,8 @@ export class NotionRepository {
   }
 
   async updatePage(page: Page, updateProps: any, redisRepo: RedisRepository) {
-    let updatedPage;
     try {
-      updatedPage = await this.notion.pages.update({
+      return await this.notion.pages.update({
         page_id: page.id,
         archived: false,
         properties: updateProps,
@@ -64,23 +63,5 @@ export class NotionRepository {
     } catch (e) {
       throw e;
     }
-    const ignorePropNames = ["Name", "comments"];
-
-    for (const propKey in updatedPage.properties) {
-      console.log({ propKey });
-      if (ignorePropNames.includes(propKey)) continue;
-      const propValue = updatedPage.properties[propKey];
-      if (propValue.type === "select") {
-        const { id, name } = propValue.select;
-        await redisRepo.sadd(`${propKey}:${name!}`, id!);
-        continue;
-      }
-      if (propValue.type !== "multi_select") continue;
-      for await (const menu of propValue.multi_select) {
-        const { id, name } = menu;
-        await redisRepo.sadd(`${propKey}:${name!}`, id!);
-      }
-    }
-    console.dir({ updatedPage }, { depth: null });
   }
 }

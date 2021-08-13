@@ -6,7 +6,9 @@ const redisRepo = new RedisRepository({
 });
 
 const main = async () => {
-  await redisRepo.sadd("NIPPP", " NI / PPP");
+  await redisRepo.set('folders:日報 \/ 日報', '993939-1820fl2-92');
+  const key = await redisRepo.getKey("folders:日報 \/ 日報");
+  console.log({ key });
   process.exit();
 };
 

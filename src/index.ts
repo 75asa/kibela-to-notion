@@ -1,9 +1,5 @@
 import { Config } from "./Config";
-import {
-  getName,
-  getPrefixNumber,
-  isTitlePropertyValue,
-} from "./notionHelpers";
+import { getPrefixNumber, isTitlePropertyValue } from "./notionHelpers";
 import { NotionRepository } from "./repository/NotionRepository";
 import { getAllMetaData } from "./metaParser";
 import { RedisRepository } from "./repository/RedisRepository";
@@ -26,38 +22,50 @@ export const main = async () => {
     })
   );
   let successCount = 0;
-  await Promise.all(
-    allPages.map(async pageMap => {
-      return await Promise.all(
-        pageMap.map(async page => {
-          const nameProp = page.properties.Name;
-          if (!isTitlePropertyValue(nameProp)) return;
-          const name = getName(nameProp.title);
-          const url = page.url;
-          const no = getPrefixNumber(url);
-          if (!no) return;
-          const metaData = allMetaData.find(item => item.prefixNumber === no);
-          if (!metaData) return;
-          const updateProps = await getUpdateProperties(
-            metaData.meta,
-            redisRepo
-          );
-          console.dir({ updateProps }, { depth: null });
-          await notionRepo
-            .updatePage(page, updateProps, redisRepo)
-            .finally(() => {
-              successCount++;
-              console.log("Page updated", { name, url });
-            });
-        })
+
+  for await (const pages of allPages) {
+    for await (const page of pages) {
+      const nameProp = page.properties.Name;
+      if (!isTitlePropertyValue(nameProp)) continue;
+      const url = page.url;
+      const no = getPrefixNumber(url);
+      if (!no) continue;
+      const metaData = allMetaData.find(item => item.prefixNumber === no);
+      if (!metaData) continue;
+      const updateProps = await getUpdateProperties(metaData.meta, redisRepo);
+      console.dir({ updateProps }, { depth: null });
+      const updatedPage = await notionRepo.updatePage(
+        page,
+        updateProps,
+        redisRepo
       );
-    })
-  ).finally(() => {
-    console.log(
-      `Finished updating page.\ntotal success count is ${successCount}!!`
-    );
-    process.exit();
-  });
+      if (updatedPage) successCount++;
+      const ignorePropNames = ["Name", "comments"];
+
+      for (const propKey in updatedPage.properties) {
+        console.log({ propKey });
+        if (ignorePropNames.includes(propKey)) continue;
+        const propValue = updatedPage.properties[propKey];
+        if (propValue.type === "select") {
+          const { id, name } = propValue.select;
+          const key = `${propKey}:${name!}`;
+          if (await redisRepo.getKey(key)) continue;
+          await redisRepo.set(key, id!);
+          continue;
+        }
+        if (propValue.type !== "multi_select") continue;
+        for await (const menu of propValue.multi_select) {
+          const { id, name } = menu;
+          const key = `${propKey}:${name!}`;
+          if (await redisRepo.getKey(key)) continue;
+          await redisRepo.set(key, id!);
+          continue;
+        }
+      }
+    }
+  }
+  console.log({ successCount });
+  process.exit();
 };
 
 main();

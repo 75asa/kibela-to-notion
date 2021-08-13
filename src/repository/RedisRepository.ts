@@ -13,15 +13,16 @@ export class RedisRepository {
       storedKey = await this.redis.get(key);
       console.log({ storedKey });
     } catch (e) {
-      throw new Error(`Error getting key ${key} from redis`);
+      console.error({ key });
+      throw e;
     }
 
     return storedKey;
   }
 
-  async sadd(key: string, value: string) {
+  async set(key: string, value: string) {
     try {
-      await this.redis.sadd(key, value).then(data => console.log({ data }));
+      await this.redis.set(key, value).then(data => console.log({ data }));
     } catch (e) {
       throw e;
     }
