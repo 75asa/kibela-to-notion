@@ -13,7 +13,7 @@ export class NotionRepository {
   async getAllPageFromDatabase(databaseId: string, prefixNumbers: number[]) {
     let allPages: Page[] = [];
 
-    const getPages = async (cursor?: string) => {
+    const getPages = async () => {
       const requestPayload: RequestParameters = {
         path: `databases/${databaseId}/query`,
         method: "post",
@@ -38,7 +38,7 @@ export class NotionRepository {
           },
         },
       };
-      if (cursor) requestPayload.body = { start_cursor: cursor };
+      // console.dir(requestPayload.body, { depth: null });
       let pages = null;
       try {
         pages = (await this.notion.request(
@@ -48,13 +48,14 @@ export class NotionRepository {
         throw e;
       }
 
-      for (const page of pages.results) {
+      for await (const page of pages.results) {
         if (page.archived) continue;
         allPages.push(page);
         console.log(page.url);
       }
       if (pages.has_more) {
-        await getPages(pages.next_cursor ?? undefined);
+        console.dir({ pages }, { depth: null });
+        // await getPages(pages.next_cursor ?? undefined);
       }
     };
     await getPages();

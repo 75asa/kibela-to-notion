@@ -17,6 +17,8 @@ export namespace Config {
     export const DATABASE = process.env.NOTION_DATABASE!;
     export const LOG_LEVEL = process.env.REDIS_LOG_LEVEL || "DEBUG";
     export namespace Props {
+      export const NAME = "Name";
+      export const PREFIX_NUMBER = "prefixNumber";
       export const AUTHOR = "author";
       export const CONTRIBUTORS = "contributors";
       export const FOLDERS = "folders";
