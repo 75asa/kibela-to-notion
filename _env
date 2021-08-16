@@ -1,2 +1,3 @@
 NOTION_KEY=secret_***
+# example https://www.notion.so/hogehoge/{THIS}?v=fugafuga
 NOTION_DATABASE=****

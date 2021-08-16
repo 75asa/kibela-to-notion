@@ -19,6 +19,14 @@ export class NotionRepository {
         method: "post",
         body: {
           filter: {
+            // and: [
+            //   {
+            //     property: "author",
+            //     select: {
+            //         is_empty: true
+            //     }
+            //   }
+            // ],
             or: prefixNumbers.map(prefix => {
               return {
                 property: "Name",

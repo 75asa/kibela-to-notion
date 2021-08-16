@@ -7,6 +7,7 @@ import { getUpdateProperties } from "./updateProp";
 import { chunk } from "./utils";
 
 export const main = async () => {
+  console.time("notion");
   const notionRepo = new NotionRepository(Config.Notion.KEY);
   const redisRepo = new RedisRepository({
     showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
@@ -28,19 +29,23 @@ export const main = async () => {
       const nameProp = page.properties.Name;
       if (!isTitlePropertyValue(nameProp)) continue;
       const url = page.url;
-      const no = getPrefixNumber(url);
-      if (!no) continue;
-      const metaData = allMetaData.find(item => item.prefixNumber === no);
+      const number = getPrefixNumber(url);
+      if (!number) continue;
+      const metaData = allMetaData.find(item => item.prefixNumber === number);
       if (!metaData) continue;
-      const updateProps = await getUpdateProperties(metaData.meta, redisRepo);
+      const updateProps = await getUpdateProperties({
+        content: metaData.meta,
+        redisRepo,
+      });
       console.dir({ updateProps }, { depth: null });
-      const updatedPage = await notionRepo.updatePage(
-        page,
-        updateProps,
-        redisRepo
-      );
+      const updatedPage = await notionRepo
+        .updatePage(page, updateProps, redisRepo)
+        .catch(err => {
+          console.error({ err, successCount });
+        });
+      if (!updatedPage) continue;
       if (updatedPage) successCount++;
-      const ignorePropNames = ["Name", "comments"];
+      const ignorePropNames = ["Name", "comments", "prefixNumber"];
 
       for (const propKey in updatedPage.properties) {
         console.log({ propKey });
@@ -65,6 +70,7 @@ export const main = async () => {
     }
   }
   console.log({ successCount });
+  console.timeEnd();
   process.exit();
 };
 

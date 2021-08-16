@@ -1,4 +1,7 @@
-import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
+import {
+  SelectOption,
+  RichText,
+} from "@notionhq/client/build/src/api-types";
 import { KibelaMetaData } from "./metaParser";
 import { RedisRepository } from "./repository/RedisRepository";
 
@@ -10,10 +13,11 @@ interface UpdatePropertiesProp {
   comments: RichText[];
 }
 
-export const getUpdateProperties = async (
-  content: KibelaMetaData,
-  redisRepo: RedisRepository
-): Promise<UpdatePropertiesProp> => {
+export const getUpdateProperties = async (updateArg: {
+  content: KibelaMetaData;
+  redisRepo: RedisRepository;
+}): Promise<UpdatePropertiesProp> => {
+  const { content, redisRepo } = updateArg;
   const folders = await Promise.all(
     content.folders.map(async name => {
       const id = await redisRepo.getKey(`folders:${name}`);
