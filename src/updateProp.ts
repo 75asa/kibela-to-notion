@@ -1,16 +1,14 @@
-import {
-  SelectOption,
-  RichText,
-} from "@notionhq/client/build/src/api-types";
+import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
+import { Config } from "./Config";
 import { KibelaMetaData } from "./metaParser";
 import { RedisRepository } from "./repository/RedisRepository";
 
 interface UpdatePropertiesProp {
-  author: SelectOption;
-  contributors: SelectOption[];
-  folders: SelectOption[];
-  groups: SelectOption[];
-  comments: RichText[];
+  [Config.Notion.Props.AUTHOR]: SelectOption;
+  [Config.Notion.Props.CONTRIBUTORS]: SelectOption[];
+  [Config.Notion.Props.GROUPS]: SelectOption[];
+  [Config.Notion.Props.FOLDERS]: SelectOption[];
+  [Config.Notion.Props.COMMENTS]: RichText[];
 }
 
 export const getUpdateProperties = async (updateArg: {
@@ -44,11 +42,11 @@ export const getUpdateProperties = async (updateArg: {
     })
   );
   return {
-    author,
-    contributors,
-    folders,
-    groups,
-    comments: content.comments.map(comment => {
+    [Config.Notion.Props.AUTHOR]: author,
+    [Config.Notion.Props.CONTRIBUTORS]: contributors,
+    [Config.Notion.Props.FOLDERS]: folders,
+    [Config.Notion.Props.GROUPS]: groups,
+    [Config.Notion.Props.COMMENTS]: content.comments.map(comment => {
       const author = comment.author;
       const content = comment.content;
       const text = `${author}: ${content}`;
