@@ -11,7 +11,7 @@ interface UpdatePropertiesProp {
   [Config.Notion.Props.COMMENTS]: RichText[];
 }
 
-export const getUpdateProperties = async (updateArg: {
+export const getProps = async (updateArg: {
   content: KibelaMetaData;
   redisRepo: RedisRepository;
 }): Promise<UpdatePropertiesProp> => {

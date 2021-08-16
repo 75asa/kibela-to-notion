@@ -3,7 +3,7 @@ import { getPrefixNumber, isTitlePropertyValue } from "./notionHelpers";
 import { NotionRepository } from "./repository/NotionRepository";
 import { getAllMetaData } from "./metaParser";
 import { RedisRepository } from "./repository/RedisRepository";
-import { getUpdateProperties } from "./updateProp";
+import { getProps } from "./propGenerator";
 import { chunk } from "./utils";
 
 export const main = async () => {
@@ -33,7 +33,7 @@ export const main = async () => {
       if (!number) continue;
       const metaData = allMetaData.find(item => item.prefixNumber === number);
       if (!metaData) continue;
-      const updateProps = await getUpdateProperties({
+      const updateProps = await getProps({
         content: metaData.meta,
         redisRepo,
       });
