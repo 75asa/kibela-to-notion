@@ -57,7 +57,6 @@ export const main = async () => {
     ];
 
     for (const propKey in updatedPage.properties) {
-      console.log({ propKey });
       if (ignorePropNames.includes(propKey)) continue;
       const propValue = updatedPage.properties[propKey];
       if (propValue.type === "select") {

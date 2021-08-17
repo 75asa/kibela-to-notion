@@ -11,7 +11,7 @@ export class RedisRepository {
     let storedKey;
     try {
       storedKey = await this.redis.get(key);
-      console.log({ storedKey });
+      // console.log({ storedKey });
     } catch (e) {
       console.error({ key });
       throw e;
