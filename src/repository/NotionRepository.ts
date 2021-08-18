@@ -19,14 +19,6 @@ export class NotionRepository {
         method: "post",
         body: {
           filter: {
-            // and: [
-            //   {
-            //     property: "author",
-            //     select: {
-            //         is_empty: true
-            //     }
-            //   }
-            // ],
             or: prefixNumbers.map(prefix => {
               return {
                 property: "Name",
@@ -38,7 +30,6 @@ export class NotionRepository {
           },
         },
       };
-      // console.dir(requestPayload.body, { depth: null });
       let pages = null;
       try {
         pages = (await this.notion.request(
@@ -52,10 +43,6 @@ export class NotionRepository {
         if (page.archived) continue;
         allPages.push(page);
         console.log(page.url);
-      }
-      if (pages.has_more) {
-        console.dir({ pages }, { depth: null });
-        // await getPages(pages.next_cursor ?? undefined);
       }
     };
     await getPages();

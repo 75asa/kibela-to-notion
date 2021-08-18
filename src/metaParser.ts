@@ -43,14 +43,10 @@ const parser = (fileName: string) => {
 
 export const getAllMetaData = () => {
   const dirPath = path.resolve(__dirname, "../notes");
-  const allDirent = fs
-    .readdirSync(dirPath, {
-      encoding: "utf-8",
-      withFileTypes: true,
-    })
-    .filter(file => {
-      return file.name !== ".gitkeep";
-    });
+  const allDirent = fs.readdirSync(dirPath, {
+    encoding: "utf-8",
+    withFileTypes: true,
+  });
 
   return allDirent.map(file => {
     const name = file.name;
