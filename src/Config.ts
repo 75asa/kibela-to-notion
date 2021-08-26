@@ -17,6 +17,14 @@ export namespace Config {
     export const TAG_NOTES = "TAG_NOTES";
   }
 
+  export namespace Markdown {
+    export namespace Path {
+      export const NOTES = "../notes";
+      export const ATTACHMENTS = "../attachments";
+    }
+    export const ENCODING = "utf8";
+  }
+
   export namespace AWS {
     export const ID = process.env.AWS_ID;
     export const SECRET = process.env.AWS_SECRET;

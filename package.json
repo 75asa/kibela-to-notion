@@ -2,10 +2,12 @@
   "name": "kibela-to-notion",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "ts-node": "ts-node",
-    "start": "ts-node src/index.ts",
+    "exec": "ts-node",
+    "start": "ts-node src/main.ts",
+    "start: TAG_NOTES": "yarn start TAG_NOTES",
+    "start: SOLVE_IMAGE": "yarn start SOLVE_IMAGE",
     "build": "tsc -p .",
     "test": "jest"
   },

@@ -1,3 +1,4 @@
+import { tag } from "./Bootstrap/Tag";
 import { Config } from "./Config";
 import { provideOptions } from "./Provider/MainProvider";
 
@@ -11,8 +12,10 @@ const { SOLVE_IMAGE, TAG_NOTES } = Config.Mode;
       //   await solveImage();
       break;
     case TAG_NOTES:
-      // TODO: call bootstrap # tagNotes
-      //   await tagNotes();
+      await tag();
+      break;
+    default:
       break;
   }
+  process.exit();
 })();
