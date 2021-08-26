@@ -1,5 +1,5 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
-import { Config } from "src/Config";
+import { Config } from "~/Config";
 
 const { SOLVE_IMAGE, TAG_NOTES } = Config.Mode;
 const optionDefinitions: OptionDefinition[] = [

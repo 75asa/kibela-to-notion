@@ -1,9 +1,9 @@
 import { Page } from "@notionhq/client/build/src/api-types";
-import { MarkdownRepository } from "src/Repository/MarkdownRepository";
-import { NotionRepository } from "src/Repository/NotionRepository";
-import { RedisRepository } from "src/Repository/RedisRepository";
-import { PagePropGenerator } from "src/Services/PagePropGenerator";
-import { getPrefixNumber } from "src/Utils/notion";
+import { MarkdownRepository } from "~/Repository/MarkdownRepository";
+import { NotionRepository } from "~/Repository/NotionRepository";
+import { RedisRepository } from "~/Repository/RedisRepository";
+import { PagePropGenerator } from "~/Services/PagePropGenerator";
+import { getPrefixNumber } from "~/Utils/notion";
 
 export class PageTag {
   #page: Page;

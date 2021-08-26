@@ -13,15 +13,11 @@
   },
   "dependencies": {
     "@notionhq/client": "^0.2.3",
-    "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "path": "^0.12.7",
-    "ts-jest": "^27.0.4"
-  },
-  "devDependencies": {
     "ts-jest": "^27.0.4",
     "tsconfig-paths": "^3.11.0",
     "@types/command-line-args": "^5.2.0",

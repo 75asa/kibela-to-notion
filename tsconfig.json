@@ -9,6 +9,9 @@
     "esModuleInterop": true,
     "rootDir": "./src",
     "outDir": "./dist",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

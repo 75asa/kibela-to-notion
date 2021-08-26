@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { Config } from "src/Config";
+import { Config } from "~/Config";
 
-const { Path, ENCODING } = Config.Markdown;
+const { ENCODING } = Config.Markdown;
 const metaDataParser = require("markdown-yaml-metadata-parser");
 
 interface Comments {
@@ -42,6 +42,7 @@ export class MarkdownRepository {
   }
   #parseMeta(fileName: string) {
     const file = fs.readFileSync(fileName, ENCODING);
+    console.log({ file });
     const result = metaDataParser(file) as ParsedResultProps;
     const metaData = result.metadata as KibelaMetaData;
     console.dir(metaData);
@@ -49,6 +50,7 @@ export class MarkdownRepository {
   }
 
   #getAllMeta(notesPath: string) {
+    console.log({ notesPath });
     const allDirent = fs.readdirSync(notesPath, {
       encoding: ENCODING,
       withFileTypes: true,
@@ -57,6 +59,7 @@ export class MarkdownRepository {
     return allDirent.map(file => {
       const name = file.name;
       const fullPath = path.resolve(notesPath, name);
+      console.log({ name, fullPath });
       const meta = this.#parseMeta(fullPath);
       const prefixNumber = Number(name.split("-")[0]);
       return {

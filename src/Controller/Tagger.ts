@@ -1,10 +1,10 @@
-import { Config } from "src/Config";
-import { MarkdownRepository } from "src/Repository/MarkdownRepository";
-import { NotionRepository } from "src/Repository/NotionRepository";
-import { RedisRepository } from "src/Repository/RedisRepository";
-import { PageFilter } from "src/UseCases/PageFilter";
-import { PageTag } from "src/UseCases/PageTag";
-import { PropStore } from "src/UseCases/PropStore";
+import { Config } from "~/Config";
+import { MarkdownRepository } from "~/Repository/MarkdownRepository";
+import { NotionRepository } from "~/Repository/NotionRepository";
+import { RedisRepository } from "~/Repository/RedisRepository";
+import { PageFilter } from "~/UseCases/PageFilter";
+import { PageTag } from "~/UseCases/PageTag";
+import { PropStore } from "~/UseCases/PropStore";
 
 export class Tagger {
   #markdownRepo: MarkdownRepository;

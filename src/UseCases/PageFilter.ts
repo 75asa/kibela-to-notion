@@ -1,8 +1,8 @@
-import { Config } from "src/Config";
-import { MarkdownRepository } from "src/Repository/MarkdownRepository";
-import { NotionRepository } from "src/Repository/NotionRepository";
-import { chunk } from "src/Utils/array";
-import { isTitlePropertyValue, getPrefixNumber } from "src/Utils/notion";
+import { Config } from "~/Config";
+import { MarkdownRepository } from "~/Repository/MarkdownRepository";
+import { NotionRepository } from "~/Repository/NotionRepository";
+import { chunk } from "~/Utils/array";
+import { isTitlePropertyValue, getPrefixNumber } from "~/Utils/notion";
 
 export class PageFilter {
   #DATABASE = Config.Notion.DATABASE;
