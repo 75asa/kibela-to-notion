@@ -5,7 +5,7 @@ import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { NotionRepository } from "~/Repository/NotionRepository";
 import { RedisRepository } from "~/Repository/RedisRepository";
 
-export const tag = async () => {
+export const Tag = async () => {
   const options = generateOption();
   await new Tagger({
     markdownRepo: new MarkdownRepository(options.notesPath),
