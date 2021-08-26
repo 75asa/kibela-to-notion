@@ -1,6 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import { Config } from "src/Config";
 import { TagOptions } from "src/Model/TagOptions";
+import path from "path";
 
 const optionDefinitions: OptionDefinition[] = [
   {
@@ -12,6 +13,8 @@ const optionDefinitions: OptionDefinition[] = [
 
 export const generateOption = (): TagOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
-  const path = (options.path as string) || Config.Markdown.Path.NOTES;
-  return { notesPath: path };
+  const notesPath = options.path
+    ? path.resolve(__dirname, options.path as string)
+    : Config.Markdown.Path.NOTES;
+  return { notesPath };
 };

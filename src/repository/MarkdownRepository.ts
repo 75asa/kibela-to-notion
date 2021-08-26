@@ -41,7 +41,7 @@ export class MarkdownRepository {
     this.#allMeta = this.#getAllMeta(notesPath);
   }
   #parseMeta(fileName: string) {
-    const file = fs.readFileSync(fileName);
+    const file = fs.readFileSync(fileName, ENCODING);
     const result = metaDataParser(file) as ParsedResultProps;
     const metaData = result.metadata as KibelaMetaData;
     console.dir(metaData);
@@ -49,15 +49,15 @@ export class MarkdownRepository {
   }
 
   #getAllMeta(notesPath: string) {
-    const dirPath = path.resolve(__dirname, notesPath);
-    const allDirent = fs.readdirSync(dirPath, {
+    const allDirent = fs.readdirSync(notesPath, {
       encoding: ENCODING,
       withFileTypes: true,
     });
 
     return allDirent.map(file => {
       const name = file.name;
-      const meta = this.#parseMeta(path.resolve(dirPath, name));
+      const fullPath = path.resolve(notesPath, name);
+      const meta = this.#parseMeta(fullPath);
       const prefixNumber = Number(name.split("-")[0]);
       return {
         prefixNumber,

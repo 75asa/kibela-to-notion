@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import path from "path";
 
 const loadEnv = () => {
   const config = dotenv.config().parsed;
@@ -19,8 +20,8 @@ export namespace Config {
 
   export namespace Markdown {
     export namespace Path {
-      export const NOTES = "../notes";
-      export const ATTACHMENTS = "../attachments";
+      export const NOTES = path.resolve(__dirname, "../notes");
+      export const ATTACHMENTS = path.resolve(__dirname, "../attachments");
     }
     export const ENCODING = "utf8";
   }
