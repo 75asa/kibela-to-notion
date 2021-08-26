@@ -6,8 +6,8 @@
   "scripts": {
     "exec": "ts-node",
     "start": "ts-node --files -r tsconfig-paths/register src/main.ts",
-    "start: TAG_NOTES": "yarn start TAG_NOTES",
-    "start: SOLVE_IMAGE": "yarn start SOLVE_IMAGE",
+    "start:TAG_NOTES": "yarn start TAG_NOTES",
+    "start:SOLVE_IMAGE": "yarn start SOLVE_IMAGE",
     "build": "tsc -p .",
     "test": "jest"
   },

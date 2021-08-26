@@ -14,7 +14,12 @@ export const provideOptions = (): typeof SOLVE_IMAGE | typeof TAG_NOTES => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const mode = options.mode;
   if (!mode) {
-    throw new Error(`mode is required and must be "crawl" or "report".`);
+    throw new Error(
+      `
+      mode is required and must be "${SOLVE_IMAGE}" or "${TAG_NOTES}".\n
+      your command line args: ${JSON.stringify(options, null, 2)}
+      `
+    );
   }
 
   return mode;
