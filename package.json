@@ -2,26 +2,28 @@
   "name": "kibela-to-notion",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "ts-node": "ts-node",
-    "start": "ts-node src/index.ts",
+    "exec": "ts-node",
+    "start": "ts-node --files -r tsconfig-paths/register src/main.ts",
+    "start:TAG_NOTES": "yarn start TAG_NOTES",
+    "start:SOLVE_IMAGE": "yarn start SOLVE_IMAGE",
     "build": "tsc -p .",
     "test": "jest"
   },
   "dependencies": {
     "@notionhq/client": "^0.2.3",
-    "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "path": "^0.12.7",
-    "ts-jest": "^27.0.4"
-  },
-  "devDependencies": {
+    "ts-jest": "^27.0.4",
+    "tsconfig-paths": "^3.11.0",
+    "@types/command-line-args": "^5.2.0",
     "@types/ioredis": "^4.26.6",
     "@types/jest": "^26.0.24",
+    "command-line-args": "^5.2.0",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   }

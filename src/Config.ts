@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import path from "path";
 
 const loadEnv = () => {
   const config = dotenv.config().parsed;
@@ -12,6 +13,25 @@ const loadEnv = () => {
 
 export namespace Config {
   loadEnv();
+  export namespace Mode {
+    export const SOLVE_IMAGE = "SOLVE_IMAGE";
+    export const TAG_NOTES = "TAG_NOTES";
+  }
+
+  export namespace Markdown {
+    export namespace Path {
+      export const NOTES = path.resolve(__dirname, "../notes");
+      export const ATTACHMENTS = path.resolve(__dirname, "../attachments");
+    }
+    export const ENCODING = "utf8";
+  }
+
+  export namespace AWS {
+    export const ID = process.env.AWS_ID;
+    export const SECRET = process.env.AWS_SECRET;
+    export const REGION = process.env.AWS_REGION;
+    export const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+  }
   export namespace Notion {
     export const KEY = process.env.NOTION_KEY!;
     export const DATABASE = process.env.NOTION_DATABASE!;

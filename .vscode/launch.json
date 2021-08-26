@@ -2,14 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "name": "start:TAG_NOTES",
       "request": "launch",
-      "name": "Launch TypeScript",
-      "program": "${workspaceFolder}/dist/index.js",
-      "preLaunchTask": "Transpile TypeScript",
+      "type": "node",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": ["${workspaceFolder}/src/main.ts", "TAG_NOTES"],
       "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
       "console": "integratedTerminal",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
     }
   ]
 }
