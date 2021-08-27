@@ -3,7 +3,7 @@ import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { NotionRepository } from "~/Repository/NotionRepository";
 import { RedisRepository } from "~/Repository/RedisRepository";
 import { PagePropGenerator } from "~/Services/PagePropGenerator";
-import { getPrefixNumber } from "~/Utils/notion";
+import { getPrefixNumber } from "~/Utils";
 
 export class PageTag {
   #page: Page;
