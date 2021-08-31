@@ -28,6 +28,11 @@ export interface KibelaMetaData {
   comments: Comments[];
 }
 
+export type AllMetaData = {
+  prefixNumber: number;
+  meta: KibelaMetaData;
+}[];
+
 interface ParsedResultProps {
   content: string;
   metadata: {
@@ -36,9 +41,9 @@ interface ParsedResultProps {
 }
 
 export class MarkdownRepository {
-  #allMeta;
+  #notesPath: string;
   constructor(notesPath: string) {
-    this.#allMeta = this.#getAllMeta(notesPath);
+    this.#notesPath = notesPath;
   }
   #parseMeta(fileName: string) {
     const file = fs.readFileSync(fileName, ENCODING);
@@ -49,16 +54,15 @@ export class MarkdownRepository {
     return metaData;
   }
 
-  #getAllMeta(notesPath: string) {
-    console.log({ notesPath });
-    const allDirent = fs.readdirSync(notesPath, {
+  getAllMeta() {
+    const allDirent = fs.readdirSync(this.#notesPath, {
       encoding: ENCODING,
       withFileTypes: true,
     });
 
     return allDirent.map(file => {
       const name = file.name;
-      const fullPath = path.resolve(notesPath, name);
+      const fullPath = path.resolve(this.#notesPath, name);
       console.log({ name, fullPath });
       const meta = this.#parseMeta(fullPath);
       const prefixNumber = Number(name.split("-")[0]);
@@ -67,13 +71,5 @@ export class MarkdownRepository {
         meta,
       };
     });
-  }
-
-  get allMetaData() {
-    return this.#allMeta;
-  }
-
-  getAllPrefix() {
-    return this.#allMeta.map(item => item.prefixNumber);
   }
 }

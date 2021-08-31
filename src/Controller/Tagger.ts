@@ -10,6 +10,7 @@ export class Tagger {
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
   #successCount = 0;
+  #allMetaData;
   constructor(arg: {
     markdownRepo: MarkdownRepository;
     redisRepo: RedisRepository;
@@ -18,18 +19,19 @@ export class Tagger {
     const { markdownRepo, redisRepo, notionRepo } = arg;
     this.#notionRepo = notionRepo;
     this.#markdownRepo = markdownRepo;
+    this.#allMetaData = this.#markdownRepo.getAllMeta();
     this.#redisRepo = redisRepo;
   }
 
   async run() {
-    const filteredPages = await new PageFilter(this.#markdownRepo).invoke(
+    const filteredPages = await new PageFilter(this.#allMetaData).invoke(
       this.#notionRepo
     );
 
     for await (const page of filteredPages) {
       const updatedPage = await new PageTag({
         page,
-        markdownRepo: this.#markdownRepo,
+        allMetaData: this.#allMetaData,
         redisRepo: this.#redisRepo,
         notionRepo: this.#notionRepo,
       }).invoke();

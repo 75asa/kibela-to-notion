@@ -11,7 +11,7 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-export const generateOption = (): TagOptions => {
+export const generateTagOption = (): TagOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const notesPath = options.path
     ? path.resolve(__dirname, options.path as string)

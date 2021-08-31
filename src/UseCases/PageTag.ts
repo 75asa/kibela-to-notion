@@ -1,5 +1,5 @@
 import { Page } from "@notionhq/client/build/src/api-types";
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
+import { AllMetaData } from "~/Repository/MarkdownRepository";
 import { NotionRepository } from "~/Repository/NotionRepository";
 import { RedisRepository } from "~/Repository/RedisRepository";
 import { PagePropGenerator } from "~/Services/PagePropGenerator";
@@ -7,18 +7,18 @@ import { getPrefixNumber } from "~/Utils";
 
 export class PageTag {
   #page: Page;
-  #markdownRepo: MarkdownRepository;
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
+  #allMetaData;
   constructor(arg: {
     page: Page;
-    markdownRepo: MarkdownRepository;
+    allMetaData: AllMetaData;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    const { page, markdownRepo, redisRepo, notionRepo } = arg;
+    const { page, allMetaData, redisRepo, notionRepo } = arg;
     this.#page = page;
-    this.#markdownRepo = markdownRepo;
+    this.#allMetaData = allMetaData;
     this.#redisRepo = redisRepo;
     this.#notionRepo = notionRepo;
   }
@@ -26,7 +26,7 @@ export class PageTag {
   async invoke() {
     const url = this.#page.url;
     const number = getPrefixNumber(url);
-    const metaData = this.#markdownRepo.allMetaData.find(
+    const metaData = this.#allMetaData.find(
       item => item.prefixNumber === number
     );
     if (!metaData) return;

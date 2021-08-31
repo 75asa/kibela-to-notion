@@ -1,15 +1,18 @@
 import { Config } from "~/Config";
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
+import { AllMetaData } from "~/Repository/MarkdownRepository";
 import { NotionRepository } from "~/Repository/NotionRepository";
 import { isTitlePropertyValue, getPrefixNumber, chunk } from "~/Utils";
 
 export class PageFilter {
   #DATABASE = Config.Notion.DATABASE;
   #chunkedAllPrefix: number[][];
-  #markdownRepo: MarkdownRepository;
-  constructor(markdownRepo: MarkdownRepository) {
-    this.#markdownRepo = markdownRepo;
-    this.#chunkedAllPrefix = chunk(this.#markdownRepo.getAllPrefix(), 100);
+  #allMetaData;
+  constructor(allMetaData: AllMetaData) {
+    this.#allMetaData = allMetaData;
+    this.#chunkedAllPrefix = chunk(
+      this.#allMetaData.map(item => item.prefixNumber),
+      100
+    );
   }
   async invoke(notionRepo: NotionRepository) {
     const allPages = await Promise.all(
@@ -26,9 +29,7 @@ export class PageFilter {
       if (!isTitlePropertyValue(nameProp)) return false;
       const number = getPrefixNumber(page.url);
       if (!number) return false;
-      return this.#markdownRepo.allMetaData.some(
-        item => item.prefixNumber === number
-      );
+      return this.#allMetaData.some(item => item.prefixNumber === number);
     });
   }
 }
