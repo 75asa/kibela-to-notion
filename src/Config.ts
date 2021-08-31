@@ -49,5 +49,6 @@ export namespace Config {
   export namespace Redis {
     export const SHOW_FRIENDLY_ERROR_STACK = true;
     export const NO_DELAY = true;
+    export const DB = Number(process.env.REDIS_DB) || 0;
   }
 }

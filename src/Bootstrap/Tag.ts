@@ -12,6 +12,7 @@ export const Tag = async () => {
     redisRepo: new RedisRepository({
       showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
       noDelay: Config.Redis.NO_DELAY,
+      db: Config.Redis.DB,
     }),
     notionRepo: new NotionRepository(Config.Notion.KEY),
   }).run();

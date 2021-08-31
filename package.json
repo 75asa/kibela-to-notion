@@ -13,18 +13,22 @@
   },
   "dependencies": {
     "@notionhq/client": "^0.2.3",
+    "@types/command-line-args": "^5.2.0",
+    "@types/ioredis": "^4.26.6",
+    "@types/jest": "^26.0.24",
+    "command-line-args": "^5.2.0",
+    "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "path": "^0.12.7",
     "ts-jest": "^27.0.4",
-    "tsconfig-paths": "^3.11.0",
-    "@types/command-line-args": "^5.2.0",
-    "@types/ioredis": "^4.26.6",
-    "@types/jest": "^26.0.24",
-    "command-line-args": "^5.2.0",
     "ts-node": "^10.1.0",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": "16.*"
   }
 }

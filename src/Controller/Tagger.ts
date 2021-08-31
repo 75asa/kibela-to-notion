@@ -1,4 +1,3 @@
-import { Config } from "~/Config";
 import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { NotionRepository } from "~/Repository/NotionRepository";
 import { RedisRepository } from "~/Repository/RedisRepository";
@@ -10,24 +9,23 @@ export class Tagger {
   #markdownRepo: MarkdownRepository;
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
+  #successCount = 0;
   constructor(arg: {
     markdownRepo: MarkdownRepository;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    this.#notionRepo = new NotionRepository(Config.Notion.KEY);
-    this.#markdownRepo = arg.markdownRepo;
-    this.#redisRepo = new RedisRepository({
-      showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
-      noDelay: Config.Redis.NO_DELAY,
-    });
+    const { markdownRepo, redisRepo, notionRepo } = arg;
+    this.#notionRepo = notionRepo;
+    this.#markdownRepo = markdownRepo;
+    this.#redisRepo = redisRepo;
   }
 
   async run() {
     const filteredPages = await new PageFilter(this.#markdownRepo).invoke(
       this.#notionRepo
     );
-    let successCount = 0;
+    const relationIds = await this.#notionRepo.storeRelationPropId();
 
     for await (const page of filteredPages) {
       const updatedPage = await new PageTag({
@@ -37,12 +35,12 @@ export class Tagger {
         notionRepo: this.#notionRepo,
       }).invoke();
       if (!updatedPage) continue;
-      if (updatedPage) successCount++;
+      if (updatedPage) this.#successCount++;
       new PropStore({
         propValueMap: updatedPage.properties,
         redisRepo: this.#redisRepo,
       }).invoke();
     }
-    console.log({ successCount });
+    console.log({ successCount: this.#successCount });
   }
 }

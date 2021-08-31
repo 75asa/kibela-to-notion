@@ -16,10 +16,11 @@ export class PageTag {
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    this.#page = arg.page;
-    this.#markdownRepo = arg.markdownRepo;
-    this.#redisRepo = arg.redisRepo;
-    this.#notionRepo = arg.notionRepo;
+    const { page, markdownRepo, redisRepo, notionRepo } = arg;
+    this.#page = page;
+    this.#markdownRepo = markdownRepo;
+    this.#redisRepo = redisRepo;
+    this.#notionRepo = notionRepo;
   }
 
   async invoke() {
