@@ -25,7 +25,6 @@ export class Tagger {
     const filteredPages = await new PageFilter(this.#markdownRepo).invoke(
       this.#notionRepo
     );
-    const relationIds = await this.#notionRepo.storeRelationPropId();
 
     for await (const page of filteredPages) {
       const updatedPage = await new PageTag({
