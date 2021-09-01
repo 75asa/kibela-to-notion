@@ -14,7 +14,7 @@ const loadEnv = () => {
 export namespace Config {
   loadEnv();
   export namespace Mode {
-    export const SOLVE_IMAGE = "SOLVE_IMAGE";
+    export const REPLACE_PATHS = "REPLACE_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
   }
 

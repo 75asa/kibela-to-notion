@@ -23,7 +23,7 @@
       }
     },
     {
-      "name": "start:SOLVE_IMAGE",
+      "name": "start:REPLACE_PATHS",
       "request": "launch",
       "type": "node",
       "runtimeArgs": [
@@ -32,7 +32,7 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      "args": ["${workspaceFolder}/src/main.ts", "SOLVE_IMAGE"],
+      "args": ["${workspaceFolder}/src/main.ts", "REPLACE_PATHS"],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
       "console": "integratedTerminal",

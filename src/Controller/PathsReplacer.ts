@@ -1,7 +1,7 @@
 import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { S3Repository } from "~/Repository/S3Repository";
 
-export class ImagePathSolver {
+export class PathsReplacer {
   #successCount = 0;
   constructor(
     private markdownRepo: MarkdownRepository,
