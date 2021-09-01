@@ -72,4 +72,18 @@ export class MarkdownRepository {
       };
     });
   }
+
+  createReadFileStream() {
+    return fs.createReadStream(this.#notesPath, {
+      encoding: ENCODING,
+      highWaterMark: 64 * 10,
+    });
+  }
+
+  createWriteFileStream() {
+    return fs.createWriteStream(this.#notesPath, {
+      encoding: ENCODING,
+      highWaterMark: 64 * 10,
+    });
+  }
 }
