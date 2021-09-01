@@ -4,11 +4,10 @@ import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { S3Repository } from "~/Repository/S3Repository";
 
 export const ReplacePaths = async () => {
-  // NOTE: add option?
-  const options = generateImageOption();
-  // S3 setting
+  const { notesPath, attachmentsPath, deliminator } = generateImageOption();
   await new PathsReplacer(
-    new MarkdownRepository(options.notesPath),
-    new S3Repository()
+    new MarkdownRepository(notesPath, attachmentsPath),
+    new S3Repository(),
+    deliminator
   ).run();
 };

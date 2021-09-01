@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "~/Config";
+import { fromFile } from "file-type";
 
 const { ENCODING } = Config.Markdown;
 const metaDataParser = require("markdown-yaml-metadata-parser");
@@ -42,9 +43,12 @@ interface ParsedResultProps {
 
 export class MarkdownRepository {
   #notesPath: string;
-  constructor(notesPath: string) {
+  #attachmentsPath: string;
+  constructor(notesPath: string, attachmentsPath?: string) {
     this.#notesPath = notesPath;
+    this.#attachmentsPath = attachmentsPath || "";
   }
+
   #parseMeta(fileName: string) {
     const file = fs.readFileSync(fileName, ENCODING);
     console.log({ file });
@@ -54,18 +58,46 @@ export class MarkdownRepository {
     return metaData;
   }
 
-  getAllMeta() {
-    const allDirent = fs.readdirSync(this.#notesPath, {
+  #getFullPathFromAllDirent(directory: string) {
+    const allDirent = fs.readdirSync(directory, {
       encoding: ENCODING,
       withFileTypes: true,
     });
-
     return allDirent.map(file => {
       const name = file.name;
-      const fullPath = path.resolve(this.#notesPath, name);
-      console.log({ name, fullPath });
-      const meta = this.#parseMeta(fullPath);
-      const prefixNumber = Number(name.split("-")[0]);
+      const fullPath = path.resolve(directory, name);
+      return { name, fullPath };
+    });
+  }
+
+  getAllNotes() {
+    return this.#getFullPathFromAllDirent(this.#notesPath);
+  }
+
+  async getAllNotesWitMineType() {
+    return this.#getFullPathFromAllDirent(this.#notesPath).map(async item => {
+      return { ...item, mineType: await fromFile(item.fullPath) };
+    });
+  }
+
+  getAllAttachments() {
+    return this.#getFullPathFromAllDirent(this.#attachmentsPath);
+  }
+
+  async getAllAttachmentsWitMineType() {
+    return await Promise.all(
+      this.#getFullPathFromAllDirent(this.#attachmentsPath).map(async item => {
+        const mineType = await fromFile(item.fullPath);
+        if (!mineType) throw new Error("mineType is not defined");
+        return { ...item, mineType };
+      })
+    );
+  }
+
+  getAllMeta() {
+    return this.getAllNotes().map(file => {
+      const meta = this.#parseMeta(file.fullPath);
+      const prefixNumber = Number(file.name.split("-")[0]);
       return {
         prefixNumber,
         meta,
@@ -73,15 +105,15 @@ export class MarkdownRepository {
     });
   }
 
-  createReadFileStream() {
-    return fs.createReadStream(this.#notesPath, {
+  createReadFileStream(path: string) {
+    return fs.createReadStream(path, {
       encoding: ENCODING,
       highWaterMark: 64 * 10,
     });
   }
 
-  createWriteFileStream() {
-    return fs.createWriteStream(this.#notesPath, {
+  createWriteFileStream(path: string) {
+    return fs.createWriteStream(path, {
       encoding: ENCODING,
       highWaterMark: 64 * 10,
     });

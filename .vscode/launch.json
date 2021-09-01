@@ -27,6 +27,7 @@
       "request": "launch",
       "type": "node",
       "runtimeArgs": [
+        "--nolazy",
         "-r",
         "${workspaceFolder}/node_modules/ts-node/register",
         "-r",
