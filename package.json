@@ -19,6 +19,7 @@
     "@types/command-line-args": "^5.2.0",
     "@types/ioredis": "^4.26.6",
     "@types/jest": "^26.0.24",
+    "aws-sdk": "^2.983.0",
     "command-line-args": "^5.2.0",
     "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
@@ -35,5 +36,7 @@
   "engines": {
     "node": "16.*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@aws-sdk/types": "^3.29.0"
+  }
 }

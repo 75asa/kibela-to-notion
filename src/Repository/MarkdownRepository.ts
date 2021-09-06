@@ -107,15 +107,15 @@ export class MarkdownRepository {
 
   createReadFileStream(path: string) {
     return fs.createReadStream(path, {
-      encoding: ENCODING,
-      highWaterMark: 64 * 10,
+      // encoding: ENCODING,
+      // highWaterMark: 64 * 10,
     });
   }
 
   createWriteFileStream(path: string) {
     return fs.createWriteStream(path, {
       encoding: ENCODING,
-      highWaterMark: 64 * 10,
+      // highWaterMark: 64 * 10,
     });
   }
 }

@@ -15,18 +15,21 @@ export class PathsReplacer {
     // const allAttachmentsPath = this.markdownRepo.getAllNotes();
     const allAttachmentsPath =
       await this.markdownRepo.getAllAttachmentsWitMineType();
-    for await (const attachmentPath of allAttachmentsPath) {
+    for (const paths of allAttachmentsPath) {
       // get name and fullPath
       // TODO: S3 upload
-      const stream = this.markdownRepo.createReadFileStream(
-        attachmentPath.fullPath
-      );
+      let data = null;
+      const stream = this.markdownRepo.createReadFileStream(paths.fullPath);
+      for await (const chunk of stream) {
+        data += chunk;
+      }
       await this.s3Repo.uploadFile({
-        stream,
-        fileName: attachmentPath.name,
+        stream: data,
+        fileName: paths.name,
         deliminator: this.deliminator,
-        mineType: attachmentPath.mineType.mime,
+        mineType: paths.mineType.mime,
       });
+      // https://kibela-to-notion.s3.ap-northeast-1.amazonaws.com/0/100.jpg
       // TODO: memo S3 URL
     }
     // TODO: マークダウンの読み込み
