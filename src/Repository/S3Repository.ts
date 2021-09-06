@@ -46,12 +46,12 @@ export class S3Repository {
   }
 
   async uploadFile(arg: {
-    stream: any;
+    buff: Buffer;
     fileName: string;
     deliminator: string;
     mineType: string;
   }) {
-    const { stream, fileName, deliminator, mineType } = arg;
+    const { buff: stream, fileName, deliminator, mineType } = arg;
     const params = {
       Bucket: this.#BUCKET_NAME,
       Key: `${deliminator}/${fileName}`,

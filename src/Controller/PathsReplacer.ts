@@ -18,13 +18,13 @@ export class PathsReplacer {
     for (const paths of allAttachmentsPath) {
       // get name and fullPath
       // TODO: S3 upload
-      let data = null;
+      let fileBuff = [];
       const stream = this.markdownRepo.createReadFileStream(paths.fullPath);
       for await (const chunk of stream) {
-        data += chunk;
+        fileBuff.push(chunk);
       }
       await this.s3Repo.uploadFile({
-        stream: data,
+        buff: Buffer.concat(fileBuff),
         fileName: paths.name,
         deliminator: this.deliminator,
         mineType: paths.mineType.mime,
