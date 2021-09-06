@@ -14,7 +14,7 @@ const loadEnv = () => {
 export namespace Config {
   loadEnv();
   export namespace Mode {
-    export const SOLVE_IMAGE = "SOLVE_IMAGE";
+    export const REPLACE_PATHS = "REPLACE_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
   }
 
@@ -49,5 +49,6 @@ export namespace Config {
   export namespace Redis {
     export const SHOW_FRIENDLY_ERROR_STACK = true;
     export const NO_DELAY = true;
+    export const DB = Number(process.env.REDIS_DB) || 0;
   }
 }

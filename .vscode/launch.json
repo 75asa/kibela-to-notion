@@ -21,6 +21,28 @@
         "TS_NODE_PROJECT": "tsconfig.json",
         "TS_NODE_TRANSPILE_ONLY": "true"
       }
+    },
+    {
+      "name": "start:REPLACE_PATHS",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": ["${workspaceFolder}/src/main.ts", "REPLACE_PATHS"],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
     }
   ]
 }

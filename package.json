@@ -7,24 +7,36 @@
     "exec": "ts-node",
     "start": "ts-node --files -r tsconfig-paths/register src/main.ts",
     "start:TAG_NOTES": "yarn start TAG_NOTES",
-    "start:SOLVE_IMAGE": "yarn start SOLVE_IMAGE",
+    "start:REPLACE_PATHS": "yarn start REPLACE_PATHS",
     "build": "tsc -p .",
     "test": "jest"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.28.0",
+    "@aws-sdk/client-s3": "^3.28.0",
+    "@aws-sdk/credential-provider-cognito-identity": "^3.28.0",
     "@notionhq/client": "^0.2.3",
+    "@types/command-line-args": "^5.2.0",
+    "@types/ioredis": "^4.26.6",
+    "@types/jest": "^26.0.24",
+    "aws-sdk": "^2.983.0",
+    "command-line-args": "^5.2.0",
+    "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
+    "file-type": "^16.5.3",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "path": "^0.12.7",
     "ts-jest": "^27.0.4",
-    "tsconfig-paths": "^3.11.0",
-    "@types/command-line-args": "^5.2.0",
-    "@types/ioredis": "^4.26.6",
-    "@types/jest": "^26.0.24",
-    "command-line-args": "^5.2.0",
     "ts-node": "^10.1.0",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": "16.*"
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "^3.29.0"
   }
 }

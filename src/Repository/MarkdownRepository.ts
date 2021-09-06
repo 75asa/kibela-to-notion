@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "~/Config";
+import { fromFile } from "file-type";
 
 const { ENCODING } = Config.Markdown;
 const metaDataParser = require("markdown-yaml-metadata-parser");
@@ -28,6 +29,11 @@ export interface KibelaMetaData {
   comments: Comments[];
 }
 
+export type AllMetaData = {
+  prefixNumber: number;
+  meta: KibelaMetaData;
+}[];
+
 interface ParsedResultProps {
   content: string;
   metadata: {
@@ -36,10 +42,13 @@ interface ParsedResultProps {
 }
 
 export class MarkdownRepository {
-  #allMeta;
-  constructor(notesPath: string) {
-    this.#allMeta = this.#getAllMeta(notesPath);
+  #notesPath: string;
+  #attachmentsPath: string;
+  constructor(notesPath: string, attachmentsPath?: string) {
+    this.#notesPath = notesPath;
+    this.#attachmentsPath = attachmentsPath || "";
   }
+
   #parseMeta(fileName: string) {
     const file = fs.readFileSync(fileName, ENCODING);
     console.log({ file });
@@ -49,19 +58,46 @@ export class MarkdownRepository {
     return metaData;
   }
 
-  #getAllMeta(notesPath: string) {
-    console.log({ notesPath });
-    const allDirent = fs.readdirSync(notesPath, {
+  #getFullPathFromAllDirent(directory: string) {
+    const allDirent = fs.readdirSync(directory, {
       encoding: ENCODING,
       withFileTypes: true,
     });
-
     return allDirent.map(file => {
       const name = file.name;
-      const fullPath = path.resolve(notesPath, name);
-      console.log({ name, fullPath });
-      const meta = this.#parseMeta(fullPath);
-      const prefixNumber = Number(name.split("-")[0]);
+      const fullPath = path.resolve(directory, name);
+      return { name, fullPath };
+    });
+  }
+
+  getAllNotes() {
+    return this.#getFullPathFromAllDirent(this.#notesPath);
+  }
+
+  async getAllNotesWitMineType() {
+    return this.#getFullPathFromAllDirent(this.#notesPath).map(async item => {
+      return { ...item, mineType: await fromFile(item.fullPath) };
+    });
+  }
+
+  getAllAttachments() {
+    return this.#getFullPathFromAllDirent(this.#attachmentsPath);
+  }
+
+  async getAllAttachmentsWitMineType() {
+    return await Promise.all(
+      this.#getFullPathFromAllDirent(this.#attachmentsPath).map(async item => {
+        const mineType = await fromFile(item.fullPath);
+        if (!mineType) throw new Error("mineType is not defined");
+        return { ...item, mineType };
+      })
+    );
+  }
+
+  getAllMeta() {
+    return this.getAllNotes().map(file => {
+      const meta = this.#parseMeta(file.fullPath);
+      const prefixNumber = Number(file.name.split("-")[0]);
       return {
         prefixNumber,
         meta,
@@ -69,11 +105,17 @@ export class MarkdownRepository {
     });
   }
 
-  get allMetaData() {
-    return this.#allMeta;
+  createReadFileStream(path: string) {
+    return fs.createReadStream(path, {
+      // encoding: ENCODING,
+      highWaterMark: 64 * 10,
+    });
   }
 
-  getAllPrefix() {
-    return this.#allMeta.map(item => item.prefixNumber);
+  createWriteFileStream(path: string) {
+    return fs.createWriteStream(path, {
+      // encoding: ENCODING,
+      highWaterMark: 64 * 10,
+    });
   }
 }
