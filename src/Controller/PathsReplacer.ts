@@ -1,3 +1,4 @@
+import { Config } from "~/Config";
 import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { S3Repository } from "~/Repository/S3Repository";
 
@@ -11,14 +12,13 @@ export class PathsReplacer {
   async run() {
     // S3 setup
     await this.s3Repo.init();
-    // TODO: S3 に画像をアップロード
-    // const allAttachmentsPath = this.markdownRepo.getAllNotes();
+    // S3 に画像をアップロード
     const allAttachmentsPath =
       await this.markdownRepo.getAllAttachmentsWitMineType();
+    const fileMap = new Map<string, string>();
     for (const paths of allAttachmentsPath) {
-      // get name and fullPath
-      // TODO: S3 upload
       let fileBuff = [];
+      const fileName = paths.name;
       const stream = this.markdownRepo.createReadFileStream(paths.fullPath);
       for await (const chunk of stream) {
         fileBuff.push(chunk);
@@ -29,17 +29,19 @@ export class PathsReplacer {
         deliminator: this.deliminator,
         mineType: paths.mineType.mime,
       });
-      // https://kibela-to-notion.s3.ap-northeast-1.amazonaws.com/0/100.jpg
-      // TODO: memo S3 URL
+      const s3URL = `https://${Config.AWS.BUCKET_NAME}.s3.${Config.AWS.REGION}.amazonaws.com/${this.deliminator}/${fileName}`;
+      // memo S3 URL
+      fileMap.set(paths.name, s3URL);
     }
     // TODO: マークダウンの読み込み
     const allNotesPath = this.markdownRepo.getAllNotes();
-    for await (const notePaths of allNotesPath) {
-      const streams = this.markdownRepo.createReadFileStream(
-        notePaths.fullPath
-      );
-      for await (const stream of streams) {
-        console.log({ stream });
+    for (const paths of allNotesPath) {
+      const stream = this.markdownRepo.createReadFileStream(paths.fullPath);
+      for await (const chunk of stream) {
+        console.log({ stream: chunk });
+        // TODO: 画像を参照してる箇所を探す
+        // e.g. <img title='ボタンパターン.png' src='../attachments/3.png' width="1024" data-meta='{"width":1024,"height":503}'/>
+        // TODO: 参照箇所があった場合、 writeStream で置き換え
       }
     }
   }
