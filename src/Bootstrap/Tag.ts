@@ -1,9 +1,11 @@
 import { Config } from "~/Config";
 import { Tagger } from "~/Controller/Tagger";
 import { generateTagOption } from "~/Provider/TagOptionProvider";
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
-import { NotionRepository } from "~/Repository/NotionRepository";
-import { RedisRepository } from "~/Repository/RedisRepository";
+import {
+  MarkdownRepository,
+  RedisRepository,
+  NotionRepository,
+} from "~/Repository";
 
 export const Tag = async () => {
   const options = generateTagOption();

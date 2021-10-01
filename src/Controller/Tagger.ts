@@ -1,9 +1,9 @@
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
-import { NotionRepository } from "~/Repository/NotionRepository";
-import { RedisRepository } from "~/Repository/RedisRepository";
-import { PageFilter } from "~/UseCases/PageFilter";
-import { PageTag } from "~/UseCases/PageTag";
-import { PropStore } from "~/UseCases/PropStore";
+import {
+  MarkdownRepository,
+  RedisRepository,
+  NotionRepository,
+} from "~/Repository";
+import { PageFilter, PageTag, PropStore } from "~/UseCases";
 
 export class Tagger {
   #markdownRepo: MarkdownRepository;

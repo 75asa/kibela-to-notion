@@ -1,6 +1,5 @@
 import { Config } from "~/Config";
-import { AllMetaData } from "~/Repository/MarkdownRepository";
-import { NotionRepository } from "~/Repository/NotionRepository";
+import { AllMetaData, NotionRepository } from "~/Repository";
 import { isTitlePropertyValue, getPrefixNumber, chunk } from "~/Utils";
 
 export class PageFilter {

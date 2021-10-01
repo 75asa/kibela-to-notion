@@ -1,7 +1,6 @@
 import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
+import { KibelaMetaData, RedisRepository } from "~/Repository";
 import { Config } from "../Config";
-import { KibelaMetaData } from "../Repository/MarkdownRepository";
-import { RedisRepository } from "../Repository/RedisRepository";
 
 const Props = Config.Notion.Props;
 

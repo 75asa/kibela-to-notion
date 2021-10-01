@@ -22,7 +22,7 @@ export class S3Repository {
   }
 
   async init() {
-    this.#getBucket();
+    await this.#getBucket();
   }
 
   async #getBucket() {

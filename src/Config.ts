@@ -21,6 +21,7 @@ export namespace Config {
   export namespace Markdown {
     export namespace Path {
       export const NOTES = path.resolve(__dirname, "../notes");
+      export const OUT = path.resolve(__dirname, "../out");
       export const ATTACHMENTS = path.resolve(__dirname, "../attachments");
     }
     export const ENCODING = "utf8";

@@ -1,7 +1,5 @@
 import { Page } from "@notionhq/client/build/src/api-types";
-import { AllMetaData } from "~/Repository/MarkdownRepository";
-import { NotionRepository } from "~/Repository/NotionRepository";
-import { RedisRepository } from "~/Repository/RedisRepository";
+import { RedisRepository, NotionRepository, AllMetaData } from "~/Repository";
 import { PagePropGenerator } from "~/Services/PagePropGenerator";
 import { getPrefixNumber } from "~/Utils";
 
