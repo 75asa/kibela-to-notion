@@ -1,7 +1,6 @@
 import { PathsReplacer } from "~/Controller/PathsReplacer";
 import { generateImageOption } from "~/Provider/ReplacePathsOptionProvider";
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
-import { S3Repository } from "~/Repository/S3Repository";
+import { MarkdownRepository, S3Repository } from "~/Repository";
 
 export const ReplacePaths = async () => {
   const { notesPath, attachmentsPath, deliminator, outPath } =

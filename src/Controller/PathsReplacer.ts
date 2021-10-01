@@ -1,7 +1,6 @@
-import { Config } from "~/Config";
-import { MarkdownRepository } from "~/Repository/MarkdownRepository";
-import { S3Repository } from "~/Repository/S3Repository";
 import * as readline from "readline";
+import { Config } from "~/Config";
+import { MarkdownRepository, S3Repository } from "~/Repository";
 
 const { BUCKET_NAME, REGION } = Config.AWS;
 

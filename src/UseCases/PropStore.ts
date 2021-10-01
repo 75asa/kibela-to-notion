@@ -1,6 +1,6 @@
 import { PropertyValueMap } from "@notionhq/client/build/src/api-endpoints";
 import { Config } from "~/Config";
-import { RedisRepository } from "~/Repository/RedisRepository";
+import { RedisRepository } from "~/Repository";
 
 export class PropStore {
   #propValueMap: PropertyValueMap;
