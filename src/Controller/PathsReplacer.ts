@@ -1,6 +1,9 @@
 import { Config } from "~/Config";
 import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { S3Repository } from "~/Repository/S3Repository";
+import * as readline from "readline";
+
+const { BUCKET_NAME, REGION } = Config.AWS;
 
 export class PathsReplacer {
   #successCount = 0;
@@ -17,23 +20,25 @@ export class PathsReplacer {
       await this.markdownRepo.getAllAttachmentsWitMineType();
     const fileMap = new Map<string, string>();
     for (const paths of allAttachmentsPath) {
-      const { name, fullPath } = paths;
+      const { name, fullPath, mineType } = paths;
       let fileBuff = [];
-      const stream = this.markdownRepo.createReadFileStream({ path: fullPath });
+      const stream = this.markdownRepo.createReadFileStream({
+        path: fullPath,
+      });
       for await (const chunk of stream) {
         fileBuff.push(chunk);
       }
       await this.s3Repo.uploadFile({
         buff: Buffer.concat(fileBuff),
-        fileName: paths.name,
+        fileName: name,
         deliminator: this.deliminator,
-        mineType: paths.mineType.mime,
+        mineType: mineType.mime,
       });
-      const s3URL = `https://${Config.AWS.BUCKET_NAME}.s3.${Config.AWS.REGION}.amazonaws.com/${this.deliminator}/${name}`;
+      const S3URL = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${this.deliminator}/${name}`;
       // memo S3 URL
-      fileMap.set(paths.name, s3URL);
+      fileMap.set(name, S3URL);
     }
-    // TODO: マークダウンの読み込み
+    // マークダウンの読み込み
     const allNotesPath = this.markdownRepo.getAllNotes();
     for (const paths of allNotesPath) {
       const { name, fullPath } = paths;
@@ -42,15 +47,29 @@ export class PathsReplacer {
         encoding: "utf8",
       });
       const writeStream = this.markdownRepo.createWriteFileStream({
-        path: `./distNotes/${fullPath}`,
+        path: name,
         encoding: "utf8",
       });
-      for await (const chunk of readStream) {
-        console.log({ chunk });
-        // TODO: 画像を参照してる箇所を探す
-        // e.g. <img title='ボタンパターン.png' src='../attachments/3.png' width="1024" data-meta='{"width":1024,"height":503}'/>
-        // TODO: 参照箇所があった場合、 writeStream で置き換え
+
+      const rl = readline.createInterface({
+        input: readStream,
+        output: writeStream,
+      });
+
+      for await (let line of rl) {
+        const REGEXP = /'..\/attachments\/([0-9]+)\.([a-zA-Z]+)'/;
+        const found = line.match(REGEXP);
+        if (found) {
+          const [src, fileName, mineType] = found;
+          const S3URL = fileMap.get(`${fileName}.${mineType}`);
+          console.log({ name, line, src, fileName, S3URL });
+          if (S3URL) line = line.replace(src, S3URL);
+        }
+        writeStream.write(`${line}\n`);
       }
+      writeStream.end();
+      this.#successCount++;
     }
+    console.log({ successCount: this.#successCount });
   }
 }

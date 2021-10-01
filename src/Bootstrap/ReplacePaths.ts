@@ -4,9 +4,10 @@ import { MarkdownRepository } from "~/Repository/MarkdownRepository";
 import { S3Repository } from "~/Repository/S3Repository";
 
 export const ReplacePaths = async () => {
-  const { notesPath, attachmentsPath, deliminator } = generateImageOption();
+  const { notesPath, attachmentsPath, deliminator, outPath } =
+    generateImageOption();
   await new PathsReplacer(
-    new MarkdownRepository(notesPath, attachmentsPath),
+    new MarkdownRepository(notesPath, attachmentsPath, outPath),
     new S3Repository(),
     deliminator
   ).run();

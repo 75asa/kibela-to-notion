@@ -44,9 +44,11 @@ interface ParsedResultProps {
 export class MarkdownRepository {
   #notesPath: string;
   #attachmentsPath: string;
-  constructor(notesPath: string, attachmentsPath?: string) {
+  #outPath: string;
+  constructor(notesPath: string, attachmentsPath?: string, outPath?: string) {
     this.#notesPath = notesPath;
     this.#attachmentsPath = attachmentsPath || "";
+    this.#outPath = outPath || "";
   }
 
   #parseMeta(fileName: string) {
@@ -115,7 +117,7 @@ export class MarkdownRepository {
 
   createWriteFileStream(arg: { path: string; encoding?: BufferEncoding }) {
     const { path, encoding } = arg;
-    return fs.createWriteStream(path, {
+    return fs.createWriteStream(`${this.#outPath}/${path}`, {
       encoding,
       highWaterMark: 64 * 10,
     });
