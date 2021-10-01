@@ -105,16 +105,18 @@ export class MarkdownRepository {
     });
   }
 
-  createReadFileStream(path: string) {
+  createReadFileStream(arg: { path: string; encoding?: BufferEncoding }) {
+    const { path, encoding } = arg;
     return fs.createReadStream(path, {
-      // encoding: ENCODING,
+      encoding,
       highWaterMark: 64 * 10,
     });
   }
 
-  createWriteFileStream(path: string) {
+  createWriteFileStream(arg: { path: string; encoding?: BufferEncoding }) {
+    const { path, encoding } = arg;
     return fs.createWriteStream(path, {
-      // encoding: ENCODING,
+      encoding,
       highWaterMark: 64 * 10,
     });
   }
