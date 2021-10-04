@@ -16,6 +16,7 @@ export namespace Config {
   export namespace Mode {
     export const REPLACE_PATHS = "REPLACE_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
+    export const UPLOAD_IMAGES = "UPLOAD_IMAGES";
   }
 
   export namespace Markdown {

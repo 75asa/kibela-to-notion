@@ -45,8 +45,13 @@ export class MarkdownRepository {
   #notesPath: string;
   #attachmentsPath: string;
   #outPath: string;
-  constructor(notesPath: string, attachmentsPath?: string, outPath?: string) {
-    this.#notesPath = notesPath;
+  constructor(input: {
+    notesPath?: string;
+    attachmentsPath?: string;
+    outPath?: string;
+  }) {
+    const { notesPath, attachmentsPath, outPath } = input;
+    this.#notesPath = notesPath || "";
     this.#attachmentsPath = attachmentsPath || "";
     this.#outPath = outPath || "";
   }

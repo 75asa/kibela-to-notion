@@ -1,9 +1,8 @@
-import { ReplacePaths } from "./Bootstrap/ReplacePaths";
-import { Tag } from "./Bootstrap/Tag";
+import { ReplacePaths, UploadImages, Tag } from "./Bootstrap";
 import { Config } from "./Config";
 import { provideOptions } from "./Provider/MainProvider";
 
-const { REPLACE_PATHS, TAG_NOTES } = Config.Mode;
+const { REPLACE_PATHS, TAG_NOTES, UPLOAD_IMAGES } = Config.Mode;
 
 (async () => {
   const mode = provideOptions();
@@ -13,6 +12,9 @@ const { REPLACE_PATHS, TAG_NOTES } = Config.Mode;
       break;
     case TAG_NOTES:
       await Tag();
+      break;
+    case UPLOAD_IMAGES:
+      await UploadImages();
       break;
     default:
       break;

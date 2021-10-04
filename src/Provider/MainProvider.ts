@@ -1,7 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import { Config } from "~/Config";
 
-const { REPLACE_PATHS, TAG_NOTES } = Config.Mode;
+const { REPLACE_PATHS, TAG_NOTES, UPLOAD_IMAGES } = Config.Mode;
 const optionDefinitions: OptionDefinition[] = [
   {
     name: "mode",
@@ -10,7 +10,10 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-export const provideOptions = (): typeof REPLACE_PATHS | typeof TAG_NOTES => {
+export const provideOptions = ():
+  | typeof REPLACE_PATHS
+  | typeof TAG_NOTES
+  | typeof UPLOAD_IMAGES => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const mode = options.mode;
   if (!mode) {

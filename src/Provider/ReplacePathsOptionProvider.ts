@@ -1,7 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
 import { Config } from "~/Config";
-import { ImageOptions } from "~/Model/ImageOptions";
+import { ReplacerOptions } from "~/Model/ReplacerOptions";
 
 const { NOTES, ATTACHMENTS, OUT } = Config.Markdown.Path;
 
@@ -12,23 +12,13 @@ const optionDefinitions: OptionDefinition[] = [
     type: String,
   },
   {
-    name: "attachments",
-    alias: "a",
-    type: String,
-  },
-  {
-    name: "deliminator",
-    alias: "d",
-    type: String,
-  },
-  {
     name: "out",
     alias: "o",
     type: String,
   },
 ];
 
-export const generateImageOption = (): ImageOptions => {
+export const generateImageOption = (): ReplacerOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const notesPath = options.notes
     ? path.resolve(__dirname, options.notes as string)

@@ -43,6 +43,27 @@
         "TS_NODE_PROJECT": "tsconfig.json",
         "TS_NODE_TRANSPILE_ONLY": "true"
       }
+    },
+    {
+      "name": "start:UPLOAD_IMAGES",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": ["${workspaceFolder}/src/main.ts", "UPLOAD_IMAGES"],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
     }
   ]
 }

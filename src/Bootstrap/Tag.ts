@@ -8,9 +8,9 @@ import {
 } from "~/Repository";
 
 export const Tag = async () => {
-  const options = generateTagOption();
+  const { notesPath } = generateTagOption();
   await new Tagger({
-    markdownRepo: new MarkdownRepository(options.notesPath),
+    markdownRepo: new MarkdownRepository({ notesPath }),
     redisRepo: new RedisRepository({
       showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
       noDelay: Config.Redis.NO_DELAY,

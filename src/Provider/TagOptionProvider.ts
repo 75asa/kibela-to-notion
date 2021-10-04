@@ -1,7 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
 import { Config } from "~/Config";
-import { TagOptions } from "~/Model/TagOptions";
+import { TagOptions } from "~/Model/TaggerOptions";
 
 const optionDefinitions: OptionDefinition[] = [
   {

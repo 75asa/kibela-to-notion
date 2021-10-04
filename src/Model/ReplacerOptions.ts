@@ -1,4 +1,4 @@
-export interface ImageOptions {
+export interface ReplacerOptions {
   notesPath: string;
   attachmentsPath: string;
   outPath: string;
