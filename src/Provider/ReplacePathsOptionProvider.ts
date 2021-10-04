@@ -1,9 +1,10 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
+import fs from "fs";
 import { Config } from "~/Config";
 import { ReplacerOptions } from "~/Model/ReplacerOptions";
 
-const { NOTES, ATTACHMENTS, OUT } = Config.Markdown.Path;
+const { NOTES, OUT } = Config.Markdown.Path;
 
 const optionDefinitions: OptionDefinition[] = [
   {
@@ -12,8 +13,8 @@ const optionDefinitions: OptionDefinition[] = [
     type: String,
   },
   {
-    name: "out",
-    alias: "o",
+    name: "delimiter",
+    alias: "d",
     type: String,
   },
 ];
@@ -21,14 +22,17 @@ const optionDefinitions: OptionDefinition[] = [
 export const generateImageOption = (): ReplacerOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const notesPath = options.notes
-    ? path.resolve(__dirname, options.notes as string)
+    ? path.resolve(__dirname, `../../${options.notes as string}`)
     : NOTES;
-  const attachmentsPath = options.attachments
-    ? path.resolve(__dirname, options.attachments as string)
-    : ATTACHMENTS;
-  const outPath = options.out
-    ? path.resolve(__dirname, options.out as string)
-    : OUT;
-  const deliminator = options.deliminator || 0;
-  return { notesPath, attachmentsPath, deliminator, outPath };
+  const delimiter = options.delimiter
+    ? options.delimiter
+    : new Date().toISOString();
+  const outPath = `${OUT}/${delimiter}`;
+
+  fs.mkdir(outPath, err => {
+    throw err;
+  });
+  console.log({ notesPath, delimiter, outPath });
+
+  return { notesPath, delimiter, outPath };
 };

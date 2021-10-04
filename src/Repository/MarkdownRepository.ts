@@ -95,7 +95,9 @@ export class MarkdownRepository {
     return await Promise.all(
       this.#getFullPathFromAllDirent(this.#attachmentsPath).map(async item => {
         const mineType = await fromFile(item.fullPath);
-        if (!mineType) throw new Error("mineType is not defined");
+        if (!mineType) {
+          console.warn(`mineType is not defined ${item.fullPath}`);
+        }
         return { ...item, mineType };
       })
     );
@@ -122,6 +124,8 @@ export class MarkdownRepository {
 
   createWriteFileStream(arg: { path: string; encoding?: BufferEncoding }) {
     const { path, encoding } = arg;
+    const finalPath = `${this.#outPath}/${path}`;
+    console.log({ finalPath });
     return fs.createWriteStream(`${this.#outPath}/${path}`, {
       encoding,
       highWaterMark: 64 * 10,

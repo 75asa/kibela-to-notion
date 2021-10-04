@@ -1,4 +1,5 @@
 import * as readline from "readline";
+import { Config } from "~/Config";
 import { MarkdownRepository, RedisRepository } from "~/Repository";
 
 export class PathsReplacer {
@@ -12,13 +13,14 @@ export class PathsReplacer {
     const allNotesPath = this.markdownRepo.getAllNotes();
     for (const paths of allNotesPath) {
       const { name, fullPath } = paths;
+      console.log({ name, fullPath });
       const readStream = this.markdownRepo.createReadFileStream({
         path: fullPath,
-        encoding: "utf8",
+        encoding: Config.Markdown.ENCODING,
       });
       const writeStream = this.markdownRepo.createWriteFileStream({
         path: name,
-        encoding: "utf8",
+        encoding: Config.Markdown.ENCODING,
       });
 
       const rl = readline.createInterface({

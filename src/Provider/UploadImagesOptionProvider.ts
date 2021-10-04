@@ -21,7 +21,7 @@ const optionDefinitions: OptionDefinition[] = [
 export const generateUploadImagesOption = (): UploaderOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const attachmentsPath = options.attachments
-    ? path.resolve(__dirname, options.attachments as string)
+    ? path.resolve(__dirname, `../../${options.attachments as string}`)
     : ATTACHMENTS;
   const delimiter = options.delimiter
     ? options.delimiter

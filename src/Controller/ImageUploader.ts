@@ -35,7 +35,7 @@ export class ImageUploader {
       await this.s3Repo.uploadFile({
         buff: Buffer.concat(fileBuff),
         fileName,
-        mineType: mineType.mime,
+        mineType: mineType?.mime,
       });
       const S3URL = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${fileName}`;
       // redis に保存
