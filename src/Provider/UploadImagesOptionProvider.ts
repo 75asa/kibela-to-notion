@@ -14,7 +14,7 @@ const optionDefinitions: OptionDefinition[] = [
   {
     name: "delimiter",
     alias: "d",
-    type: Number,
+    type: String,
   },
 ];
 
@@ -24,7 +24,7 @@ export const generateUploadImagesOption = (): UploaderOptions => {
     ? path.resolve(__dirname, options.attachments as string)
     : ATTACHMENTS;
   const delimiter = options.delimiter
-    ? String(options.delimiter)
+    ? options.delimiter
     : new Date().toISOString();
   console.log({ attachmentsPath, delimiter });
   return { attachmentsPath, delimiter };
