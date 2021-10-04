@@ -1,7 +1,8 @@
 NOTION_KEY=secret_***
 # example https://www.notion.so/hogehoge/{THIS}?v=fugafuga
 NOTION_DATABASE=****
-REDIS_DB=1
+REDIS_IMAGE_DB=0
+REDIS_TAG_DB=1
 AWS_ID=
 AWS_SECRET=
 AWS_REGION=

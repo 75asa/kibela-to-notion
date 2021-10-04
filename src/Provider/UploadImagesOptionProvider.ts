@@ -23,7 +23,9 @@ export const generateUploadImagesOption = (): UploaderOptions => {
   const attachmentsPath = options.attachments
     ? path.resolve(__dirname, options.attachments as string)
     : ATTACHMENTS;
-  const delimiter = String(options.delimiter) || new Date().toISOString();
+  const delimiter = options.delimiter
+    ? String(options.delimiter)
+    : new Date().toISOString();
   console.log({ attachmentsPath, delimiter });
   return { attachmentsPath, delimiter };
 };

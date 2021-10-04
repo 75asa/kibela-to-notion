@@ -7,14 +7,16 @@ import {
   NotionRepository,
 } from "~/Repository";
 
+const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
+
 export const Tag = async () => {
   const { notesPath } = generateTagOption();
   await new Tagger({
     markdownRepo: new MarkdownRepository({ notesPath }),
     redisRepo: new RedisRepository({
-      showFriendlyErrorStack: Config.Redis.SHOW_FRIENDLY_ERROR_STACK,
-      noDelay: Config.Redis.NO_DELAY,
-      db: Config.Redis.DB,
+      showFriendlyErrorStack: SHOW_FRIENDLY_ERROR_STACK,
+      noDelay: NO_DELAY,
+      db: DB.TAG,
     }),
     notionRepo: new NotionRepository(Config.Notion.KEY),
   }).run();

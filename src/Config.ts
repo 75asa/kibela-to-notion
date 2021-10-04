@@ -1,18 +1,16 @@
 import dotenv from "dotenv";
 import path from "path";
 
-const loadEnv = () => {
-  const config = dotenv.config().parsed;
-  if (config) {
-    for (const key in config) {
-      process.env[key] = config[key];
-    }
-    console.log("all env vars loading done");
+const config = dotenv.config().parsed;
+
+if (config) {
+  for (const key in config) {
+    process.env[key] = config[key];
   }
-};
+  console.log("all env vars loading done");
+}
 
 export namespace Config {
-  loadEnv();
   export namespace Mode {
     export const REPLACE_PATHS = "REPLACE_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
@@ -20,12 +18,12 @@ export namespace Config {
   }
 
   export namespace Markdown {
+    export const ENCODING = "utf8";
     export namespace Path {
       export const NOTES = path.resolve(__dirname, "../notes");
       export const OUT = path.resolve(__dirname, "../out");
       export const ATTACHMENTS = path.resolve(__dirname, "../attachments");
     }
-    export const ENCODING = "utf8";
   }
 
   export namespace AWS {
@@ -37,7 +35,6 @@ export namespace Config {
   export namespace Notion {
     export const KEY = process.env.NOTION_KEY!;
     export const DATABASE = process.env.NOTION_DATABASE!;
-    export const LOG_LEVEL = process.env.REDIS_LOG_LEVEL || "DEBUG";
     export namespace Props {
       export const NAME = "Name";
       export const PREFIX_NUMBER = "prefixNumber";
@@ -51,6 +48,9 @@ export namespace Config {
   export namespace Redis {
     export const SHOW_FRIENDLY_ERROR_STACK = true;
     export const NO_DELAY = true;
-    export const DB = Number(process.env.REDIS_DB) || 0;
+    export namespace DB {
+      export const IMAGE = Number(process.env.REDIS_IMAGE_DB || 0);
+      export const TAG = Number(process.env.REDIS_TAG_DB || 1);
+    }
   }
 }
