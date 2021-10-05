@@ -33,7 +33,14 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      "args": ["${workspaceFolder}/src/main.ts", "REPLACE_PATHS"],
+      "args": [
+        "${workspaceFolder}/src/main.ts",
+        "REPLACE_PATHS",
+        "-n",
+        "./kibela-tambourine-0/notes/",
+        "-d",
+        "0"
+      ],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
       "console": "integratedTerminal",
