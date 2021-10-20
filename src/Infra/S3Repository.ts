@@ -4,13 +4,14 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { Config } from "~/Config";
+import { IFileRepository } from "../Repository/FileRepository";
 
-export class S3Repository {
+export class S3Repository implements IFileRepository {
   #s3client;
   #BUCKET_NAME;
 
   constructor() {
-    const { ID, SECRET, REGION, BUCKET_NAME } = Config.AWS;
+    const { ID, SECRET, REGION, BUCKET_NAME } = Config.Storage.AWS;
     if (!ID || !SECRET || !REGION || !BUCKET_NAME) {
       throw new Error("AWS credentials not set");
     }
@@ -41,11 +42,11 @@ export class S3Repository {
     return data;
   }
 
-  async getBucketContents() {
-    const list = await this.#getBucket();
-  }
-
-  async uploadFile(input: { buff: Buffer; fileName: string; mineType?: string }) {
+  async uploadFile(input: {
+    buff: Buffer;
+    fileName: string;
+    mineType?: string;
+  }) {
     const { buff: stream, fileName, mineType } = input;
     const params = {
       Bucket: this.#BUCKET_NAME,
@@ -54,7 +55,7 @@ export class S3Repository {
       ContentType: mineType,
     };
     try {
-      return await this.#s3client.send(new PutObjectCommand(params));
+      await this.#s3client.send(new PutObjectCommand(params));
     } catch (e) {
       throw e;
     }

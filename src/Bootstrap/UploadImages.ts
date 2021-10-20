@@ -10,6 +10,7 @@ import { Config } from "~/Config";
 const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
 
 export const UploadImages = async () => {
+  // option で S3 or Drive 選べるようにする
   const { attachmentsPath, delimiter } = generateUploadImagesOption();
   await new ImageUploader(
     new MarkdownRepository({ attachmentsPath }),

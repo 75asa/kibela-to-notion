@@ -25,6 +25,7 @@
     "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "file-type": "^16.5.3",
+    "googleapis": "39",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "markdown-yaml-metadata-parser": "^3.0.0",

@@ -26,11 +26,19 @@ export namespace Config {
     }
   }
 
-  export namespace AWS {
-    export const ID = process.env.AWS_ID;
-    export const SECRET = process.env.AWS_SECRET;
-    export const REGION = process.env.AWS_REGION;
-    export const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+  export namespace Storage {
+    namespace GoogleDrive {
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(
+        __dirname,
+        "../credentials.json"
+      );
+    }
+    export namespace AWS {
+      export const ID = process.env.AWS_ID;
+      export const SECRET = process.env.AWS_SECRET;
+      export const REGION = process.env.AWS_REGION;
+      export const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+    }
   }
   export namespace Notion {
     export const KEY = process.env.NOTION_KEY!;
