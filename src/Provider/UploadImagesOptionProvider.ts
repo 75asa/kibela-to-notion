@@ -3,8 +3,6 @@ import path from "path";
 import { Config } from "~/Config";
 import { UploaderOptions } from "~/Model/UploaderOptions";
 
-const { ATTACHMENTS } = Config.Markdown.Path;
-
 const optionDefinitions: OptionDefinition[] = [
   {
     name: "attachments",
@@ -16,16 +14,31 @@ const optionDefinitions: OptionDefinition[] = [
     alias: "d",
     type: String,
   },
+  {
+    name: "storage",
+    alias: "s",
+    type: (value: string) => {
+      if ((value as Config.Storage.Mode) === "S3") {
+        return value as Config.Storage.Mode;
+      } else if ((value as Config.Storage.Mode) === "GoogleDrive") {
+        return value;
+      } else {
+        throw new Error(`Invalid storage type: actual input is ${value}`);
+      }
+    },
+  },
 ];
 
 export const generateUploadImagesOption = (): UploaderOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
+  const { ATTACHMENTS } = Config.Markdown.Path;
   const attachmentsPath = options.attachments
     ? path.resolve(__dirname, `../../${options.attachments as string}`)
     : ATTACHMENTS;
   const delimiter = options.delimiter
     ? options.delimiter
     : new Date().toISOString();
-  console.log({ attachmentsPath, delimiter });
-  return { attachmentsPath, delimiter };
+  const storageMode: Config.Storage.Mode = options.storage;
+  console.log({ attachmentsPath, delimiter, storageMode });
+  return { attachmentsPath, delimiter, storageMode };
 };

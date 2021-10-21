@@ -94,11 +94,11 @@ export class MarkdownRepository {
   async getAllAttachmentsWitMineType() {
     return await Promise.all(
       this.#getFullPathFromAllDirent(this.#attachmentsPath).map(async item => {
-        const mineType = await fromFile(item.fullPath);
-        if (!mineType) {
+        const mimeType = await fromFile(item.fullPath);
+        if (!mimeType) {
           console.warn(`mineType is not defined ${item.fullPath}`);
         }
-        return { ...item, mineType };
+        return { ...item, mimeType };
       })
     );
   }

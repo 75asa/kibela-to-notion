@@ -26,11 +26,22 @@ export namespace Config {
     }
   }
 
-  export namespace AWS {
-    export const ID = process.env.AWS_ID;
-    export const SECRET = process.env.AWS_SECRET;
-    export const REGION = process.env.AWS_REGION;
-    export const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+  export namespace Storage {
+    export type Mode = "S3" | "GoogleDrive";
+    export namespace GoogleDrive {
+      // NOTE: your credential file should be in the same directory as this file
+      export const CREDENTIALS_PATH = path.resolve(
+        __dirname,
+        "../credentials.json"
+      );
+      export const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    }
+    export namespace AWS {
+      export const ID = process.env.AWS_ID;
+      export const SECRET = process.env.AWS_SECRET;
+      export const REGION = process.env.AWS_REGION;
+      export const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+    }
   }
   export namespace Notion {
     export const KEY = process.env.NOTION_KEY!;
