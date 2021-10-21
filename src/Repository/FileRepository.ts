@@ -1,3 +1,3 @@
 export interface IFileRepository {
-  uploadFile(input: any): Promise<void>;
+  uploadFile(input: any): Promise<any>;
 }

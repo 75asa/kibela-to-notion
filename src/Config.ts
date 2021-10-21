@@ -27,8 +27,10 @@ export namespace Config {
   }
 
   export namespace Storage {
-    namespace GoogleDrive {
-      process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(
+    export type Mode = "S3" | "GoogleDrive";
+    export namespace GoogleDrive {
+      // NOTE: your credential file should be in the same directory as this file
+      export const CREDENTIALS_PATH = path.resolve(
         __dirname,
         "../credentials.json"
       );

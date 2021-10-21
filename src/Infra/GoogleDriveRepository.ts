@@ -1,14 +1,23 @@
 import { drive_v3, google } from "googleapis";
 import { Compute, JWT, UserRefreshClient } from "google-auth-library";
+import fs from "fs";
 import { IFileRepository } from "../Repository/FileRepository";
+import { Config } from "../Config";
+
+const { CREDENTIALS_PATH } = Config.Storage.GoogleDrive;
 
 export class GoogleDriveRepository implements IFileRepository {
   #DriveClient: drive_v3.Drive;
+  // only callable by factory method
   private constructor(auth: Compute | JWT | UserRefreshClient) {
     this.#DriveClient = google.drive({ version: "v3", auth });
   }
 
-  static async factory() {
+  static async create() {
+    if (!fs.existsSync(CREDENTIALS_PATH))
+      throw new Error("Credentials not found");
+    // automatically creates a client with credentials, otherwise specify the credentials file path
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = CREDENTIALS_PATH;
     const auth = await google.auth.getClient({
       scopes: ["https://www.googleapis.com/auth/drive.readonly"],
     });
@@ -33,13 +42,23 @@ export class GoogleDriveRepository implements IFileRepository {
     }
   }
 
-  async uploadFile(input: { mimeType: string; body: any }) {
-    const { mimeType, body } = input;
-    await this.#DriveClient.files.create({
+  async uploadFile(input: {
+    buff: Buffer;
+    fileName: string;
+    mimeType?: string;
+  }) {
+    const { buff, fileName, mimeType } = input;
+    const result = await this.#DriveClient.files.create({
+      requestBody: {
+        name: fileName,
+      },
       media: {
-        mimeType,
-        body,
+        mimeType: mimeType,
+        body: buff,
       },
     });
+    const driveID = result.data.id;
+    if (!driveID) throw new Error("Drive ID not found");
+    return `https://drive.google.com/file/d/${driveID}/view`;
   }
 }
