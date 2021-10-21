@@ -1,6 +1,5 @@
 import { GoogleDriveRepository } from "../../Infra";
 import { IFileRepository } from "../../Repository";
-import fs from "fs";
 import { PassThrough } from "stream";
 
 export class UploadGoogleDrive {
@@ -10,11 +9,7 @@ export class UploadGoogleDrive {
       throw new Error("Invalid repository");
     this.#repo = repo;
   }
-  async invoke(
-    buff: fs.ReadStream | Buffer | PassThrough,
-    name: string,
-    mimeType?: string
-  ) {
+  async invoke(buff: PassThrough, name: string, mimeType?: string) {
     return await this.#repo.uploadFile({
       buff,
       fileName: name,

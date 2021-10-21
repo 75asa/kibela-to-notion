@@ -34,7 +34,7 @@ export class GoogleDriveRepository implements IFileRepository {
   }
 
   async uploadFile(input: {
-    buff: fs.ReadStream | Buffer | PassThrough,
+    buff: PassThrough,
     fileName: string;
     mimeType?: string;
   }) {

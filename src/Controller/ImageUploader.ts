@@ -33,16 +33,14 @@ export class ImageUploader {
         );
       } else if (this.fileRepo instanceof GoogleDriveRepository) {
         let bufferStream = new PassThrough();
-        // bufferStream.end({ chunk: Buffer.concat(fileBuff) });
         bufferStream.end(Buffer.concat(fileBuff));
         fileURL = await new UploadGoogleDrive(this.fileRepo).invoke(
-          // Buffer.concat(fileBuff),
-          // stream,
           bufferStream,
           name,
           mimeType?.mime
         );
       }
+      console.log({ name, fullPath, mimeType, fileURL });
       this.redisRepo.set(name, fileURL);
       this.#successCount++;
     }
