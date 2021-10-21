@@ -16,7 +16,7 @@ export const UploadImages = async () => {
     generateUploadImagesOption();
   let repository: IFileRepository;
   if (storageMode === "GoogleDrive") {
-    repository = await GoogleDriveRepository.create();
+    repository = await GoogleDriveRepository.create(delimiter);
   } else if (storageMode === "S3") {
     repository = await S3Repository.create(delimiter);
   } else {

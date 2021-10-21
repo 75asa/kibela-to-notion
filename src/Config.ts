@@ -34,6 +34,7 @@ export namespace Config {
         __dirname,
         "../credentials.json"
       );
+      export const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
     }
     export namespace AWS {
       export const ID = process.env.AWS_ID;
