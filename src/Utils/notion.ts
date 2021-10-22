@@ -1,12 +1,10 @@
-import {
-  PropertyValue,
-  TitlePropertyValue,
-} from "@notionhq/client/build/src/api-types";
+import { PropertyValue } from "@notionhq/client/build/src/api-types";
 
-export const isTitlePropertyValue = (
+export const isDetectiveType = <T extends PropertyValue>(
   propValue: PropertyValue
-): propValue is TitlePropertyValue => {
-  return (propValue as TitlePropertyValue).type === "title";
+): propValue is T => {
+  const propertyType = (propValue as T).type;
+  return (propValue as T).type === propertyType;
 };
 
 export const getPrefixNumber = (url: string) => {

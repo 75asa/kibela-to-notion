@@ -1,6 +1,11 @@
+import { TitlePropertyValue } from "@notionhq/client/build/src/api-types";
 import { Config } from "~/Config";
 import { AllMetaData, NotionRepository } from "~/Repository";
-import { isTitlePropertyValue, getPrefixNumber, chunk } from "~/Utils";
+import {
+  getPrefixNumber,
+  chunk,
+  isDetectiveType,
+} from "~/Utils";
 
 export class PageFilter {
   #DATABASE = Config.Notion.DATABASE;
@@ -25,7 +30,7 @@ export class PageFilter {
     const allFlatPages = allPages.flat();
     return allFlatPages.filter(page => {
       const nameProp = page.properties[Config.Notion.Props.NAME];
-      if (!isTitlePropertyValue(nameProp)) return false;
+      if (!isDetectiveType<TitlePropertyValue>(nameProp)) return false;
       const number = getPrefixNumber(page.url);
       if (!number) return false;
       return this.#allMetaData.some(item => item.prefixNumber === number);
