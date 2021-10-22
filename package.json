@@ -9,6 +9,8 @@
     "start:TAG_NOTES": "yarn start TAG_NOTES",
     "start:REPLACE_PATHS": "yarn start REPLACE_PATHS",
     "start:UPLOAD_IMAGES": "yarn start UPLOAD_IMAGES",
+    "start:UPLOAD_IMAGES:GD": "yarn start UPLOAD_IMAGES -s GoogleDrive",
+    "start:UPLOAD_IMAGES:S3": "yarn start UPLOAD_IMAGES -s S3",
     "build": "tsc -p .",
     "test": "jest"
   },
