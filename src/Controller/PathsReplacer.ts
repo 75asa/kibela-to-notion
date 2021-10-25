@@ -28,13 +28,16 @@ export class PathsReplacer {
         output: writeStream,
       });
 
+      // NOTE: ここで落ちるが readline.createInterface() の初期化は成功してるので out/0/ に空ファイルが作成される
       for await (let line of rl) {
         const REGEXP = /'..\/attachments\/([0-9]+)\.([a-zA-Z]+)'/;
         const found = line.match(REGEXP);
         if (found) {
           const [src, fileName, mineType] = found;
-          const fileURL = await this.redisRepo.getKey(`${fileName}.${mineType}`);
-          console.log({ name, line, src, fileName, S3URL: fileURL });
+          const fileURL = await this.redisRepo.getKey(
+            `${fileName}.${mineType}`
+          );
+          console.log({ name, line, src, fileName, fileURL });
           if (!fileURL) {
             throw new Error(
               `${fileName}.${mineType} is not found on local Redis db: #1`
