@@ -20,7 +20,6 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-// export const generateImageOption = (): ReplacerOptions => {
 export const generateImageOption = async (): Promise<ReplacerOptions> => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const { notes, delimiter } = options;
@@ -29,12 +28,8 @@ export const generateImageOption = async (): Promise<ReplacerOptions> => {
     : NOTES;
   const delimiterName = delimiter ? delimiter : new Date().toISOString();
   // const outPath = `${OUT}/${delimiter}`;
-  const outPath = path.join(OUT, delimiterName);
   // const outPath = path.join(OUT, delimiterName, "HOGE");
-
-  // fs.mkdir(outPath, { recursive: true }, err => {
-  //   throw err;
-  // });
+  const outPath = path.join(OUT, delimiterName);
 
   if (!(await directoryExists(outPath))) {
     // fs.mkdir(outPath, { recursive: true }, err => {
