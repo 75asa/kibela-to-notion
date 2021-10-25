@@ -36,9 +36,9 @@ export const generateImageOption = async (): Promise<ReplacerOptions> => {
   //   throw err;
   // });
 
-  // NOTE: directoryExists() も機能してない
-  if (await directoryExists(outPath)) {
-    fs.mkdir(outPath, { recursive: true }, err => {
+  if (!(await directoryExists(outPath))) {
+    // fs.mkdir(outPath, { recursive: true }, err => {
+    fs.mkdir(outPath, err => {
       throw err;
     });
   }
