@@ -1,9 +1,8 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
-import fs from "fs";
 import { Config } from "~/Config";
 import { ReplacerOptions } from "~/Model/ReplacerOptions";
-import { directoryExists } from "../Utils";
+import { directoryExists, mkdir } from "../Utils";
 
 const { NOTES, OUT } = Config.Markdown.Path;
 
@@ -27,16 +26,9 @@ export const generateImageOption = async (): Promise<ReplacerOptions> => {
     ? path.resolve(__dirname, `../../${notes as string}`)
     : NOTES;
   const delimiterName = delimiter ? delimiter : new Date().toISOString();
-  // const outPath = `${OUT}/${delimiter}`;
-  // const outPath = path.join(OUT, delimiterName, "HOGE");
   const outPath = path.join(OUT, delimiterName);
 
-  if (!(await directoryExists(outPath))) {
-    // fs.mkdir(outPath, { recursive: true }, err => {
-    fs.mkdir(outPath, err => {
-      throw err;
-    });
-  }
+  if (!(await directoryExists(outPath))) await mkdir(outPath);
 
   console.log({ notesPath, delimiterName, outPath });
 

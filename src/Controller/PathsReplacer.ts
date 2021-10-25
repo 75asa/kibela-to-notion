@@ -28,7 +28,6 @@ export class PathsReplacer {
         output: writeStream,
       });
 
-      // NOTE: ここで落ちるが readline.createInterface() の初期化は成功してるので out/0/ に空ファイルが作成される
       for await (let line of rl) {
         const REGEXP = /'..\/attachments\/([0-9]+)\.([a-zA-Z]+)'/;
         const found = line.match(REGEXP);
