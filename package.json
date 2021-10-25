@@ -40,9 +40,10 @@
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.29.0",
+    "@types/node": "^16.11.4",
     "@types/uuid": "^8.3.1"
   },
   "engines": {
-    "node": "16.*"
+    "node": ">=16.*"
   }
 }
