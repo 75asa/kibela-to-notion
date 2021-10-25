@@ -33,14 +33,14 @@ export class PathsReplacer {
         const found = line.match(REGEXP);
         if (found) {
           const [src, fileName, mineType] = found;
-          const S3URL = await this.redisRepo.getKey(`${fileName}.${mineType}`);
-          console.log({ name, line, src, fileName, S3URL });
-          if (!S3URL) {
+          const fileURL = await this.redisRepo.getKey(`${fileName}.${mineType}`);
+          console.log({ name, line, src, fileName, S3URL: fileURL });
+          if (!fileURL) {
             throw new Error(
               `${fileName}.${mineType} is not found on local Redis db: #1`
             );
           }
-          line = line.replace(src, S3URL);
+          line = line.replace(src, fileURL);
         }
         writeStream.write(`${line}\n`);
       }

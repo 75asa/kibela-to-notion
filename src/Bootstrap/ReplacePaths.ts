@@ -6,7 +6,8 @@ import { Config } from "~/Config";
 const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
 
 export const ReplacePaths = async () => {
-  const { notesPath, outPath } = generateImageOption();
+  // const { notesPath, outPath } = generateImageOption();
+  const { notesPath, outPath } = await generateImageOption();
   await new PathsReplacer(
     new MarkdownRepository({ notesPath, outPath }),
     new RedisRepository({

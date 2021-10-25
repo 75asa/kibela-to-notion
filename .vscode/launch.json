@@ -33,6 +33,10 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
+      // "args": [
+      //   "${workspaceFolder}/src/main.ts",
+      //   "REPLACE_PATHS",
+      // for Debug
       "args": [
         "${workspaceFolder}/src/main.ts",
         "REPLACE_PATHS",

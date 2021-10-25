@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { Config } from "~/Config";
 import { ReplacerOptions } from "~/Model/ReplacerOptions";
+import { directoryExists } from "../Utils";
 
 const { NOTES, OUT } = Config.Markdown.Path;
 
@@ -19,20 +20,30 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-export const generateImageOption = (): ReplacerOptions => {
+// export const generateImageOption = (): ReplacerOptions => {
+export const generateImageOption = async (): Promise<ReplacerOptions> => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
-  const notesPath = options.notes
-    ? path.resolve(__dirname, `../../${options.notes as string}`)
+  const { notes, delimiter } = options;
+  const notesPath = notes
+    ? path.resolve(__dirname, `../../${notes as string}`)
     : NOTES;
-  const delimiter = options.delimiter
-    ? options.delimiter
-    : new Date().toISOString();
-  const outPath = `${OUT}/${delimiter}`;
+  const delimiterName = delimiter ? delimiter : new Date().toISOString();
+  // const outPath = `${OUT}/${delimiter}`;
+  const outPath = path.join(OUT, delimiterName);
+  // const outPath = path.join(OUT, delimiterName, "HOGE");
 
-  fs.mkdir(outPath, err => {
-    throw err;
-  });
-  console.log({ notesPath, delimiter, outPath });
+  // fs.mkdir(outPath, { recursive: true }, err => {
+  //   throw err;
+  // });
 
-  return { notesPath, delimiter, outPath };
+  // NOTE: directoryExists() も機能してない
+  if (await directoryExists(outPath)) {
+    fs.mkdir(outPath, { recursive: true }, err => {
+      throw err;
+    });
+  }
+
+  console.log({ notesPath, delimiterName, outPath });
+
+  return { notesPath, delimiterName, outPath };
 };
