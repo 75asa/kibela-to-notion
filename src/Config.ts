@@ -15,10 +15,13 @@ export namespace Config {
     export const REPLACE_PATHS = "REPLACE_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
     export const UPLOAD_IMAGES = "UPLOAD_IMAGES";
+    export const UPLOAD_ALL_IMAGES = "UPLOAD_ALL_IMAGES";
   }
 
   export namespace Markdown {
     export const ENCODING = "utf8";
+    export const EXPORTED_TEAM_NAME =
+      process.env.EXPORTED_TEAM_NAME || "kibela-tambourine";
     export namespace Path {
       export const NOTES = path.resolve(__dirname, "../notes");
       export const OUT = path.resolve(__dirname, "../out");

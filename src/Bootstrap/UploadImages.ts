@@ -11,13 +11,13 @@ import { GoogleDriveRepository, S3Repository } from "../Infra";
 const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
 
 export const UploadImages = async () => {
-  const { attachmentsPath, delimiter, storageMode } =
+  const { attachmentsPath, delimiterName, storageMode } =
     generateUploadImagesOption();
   let repository: IFileRepository;
   if (storageMode === "GoogleDrive") {
-    repository = await GoogleDriveRepository.create(delimiter);
+    repository = await GoogleDriveRepository.create(delimiterName);
   } else if (storageMode === "S3") {
-    repository = await S3Repository.create(delimiter);
+    repository = await S3Repository.create(delimiterName);
   } else {
     throw new Error("storageMode is not defined");
   }
@@ -28,6 +28,6 @@ export const UploadImages = async () => {
       showFriendlyErrorStack: SHOW_FRIENDLY_ERROR_STACK,
       noDelay: NO_DELAY,
       db: DB.IMAGE,
-    }),
+    })
   ).run();
 };

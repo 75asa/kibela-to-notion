@@ -4,8 +4,18 @@ import { IFileRepository } from "../Repository/FileRepository";
 import { UploadS3, UploadGoogleDrive } from "../UseCases/FileUpload/";
 import { PassThrough } from "stream";
 
+interface ImageUploaderResult {
+  attachmentsPath: string;
+  totalAmount: number;
+  successCount: number;
+}
 export class ImageUploader {
   #successCount = 0;
+  #result: ImageUploaderResult = {
+    attachmentsPath: this.markdownRepo.getAttachmentsPath(),
+    totalAmount: 0,
+    successCount: 0,
+  };
   constructor(
     private markdownRepo: MarkdownRepository,
     private fileRepo: IFileRepository,
@@ -14,6 +24,7 @@ export class ImageUploader {
   async run() {
     const allAttachmentsPath =
       await this.markdownRepo.getAllAttachmentsWitMineType();
+    this.#result.totalAmount = allAttachmentsPath.length;
 
     for (const paths of allAttachmentsPath) {
       const { name, fullPath, mimeType } = paths;
@@ -45,5 +56,7 @@ export class ImageUploader {
       this.#successCount++;
     }
     console.log({ successCount: this.#successCount });
+    this.#result.successCount = this.#successCount;
+    return this.#result;
   }
 }

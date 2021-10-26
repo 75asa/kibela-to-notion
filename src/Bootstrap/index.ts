@@ -1,3 +1,4 @@
-export * from "./ReplacePaths"
-export * from "./Tag"
-export * from "./UploadImages"
+export * from "./ReplacePaths";
+export * from "./Tag";
+export * from "./UploadImages";
+export * from "./UploadAllImages";

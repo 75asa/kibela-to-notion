@@ -131,4 +131,7 @@ export class MarkdownRepository {
       highWaterMark: 64 * 10,
     });
   }
+  getAttachmentsPath() {
+    return this.#attachmentsPath;
+  }
 }
