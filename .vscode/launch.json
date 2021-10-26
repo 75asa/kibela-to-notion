@@ -65,18 +65,18 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      "args": ["${workspaceFolder}/src/main.ts", "UPLOAD_IMAGES",],
+      // "args": ["${workspaceFolder}/src/main.ts", "UPLOAD_IMAGES",],
       // for DEBUG
-      // "args": [
-      //   "${workspaceFolder}/src/main.ts",
-      //   "UPLOAD_IMAGES",
-      //   "-d",
-      //   "0",
-      //   "-a",
-      //   "./kibela-tambourine-0/attachments/",
-      //   "-s",
-      //   "GoogleDrive"
-      // ],
+      "args": [
+        "${workspaceFolder}/src/main.ts",
+        "UPLOAD_IMAGES",
+        "-d",
+        "1",
+        "-a",
+        "./kibela-tambourine-1/attachments/",
+        "-s",
+        "GoogleDrive"
+      ],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
       "console": "integratedTerminal",

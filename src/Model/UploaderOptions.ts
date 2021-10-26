@@ -2,6 +2,6 @@ import { Config } from "~/Config";
 
 export interface UploaderOptions {
   attachmentsPath: string;
-  delimiter: string;
+  delimiterName: string;
   storageMode: Config.Storage.Mode;
 }

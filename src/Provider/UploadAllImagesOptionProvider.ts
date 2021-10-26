@@ -1,18 +1,13 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
 import { Config } from "~/Config";
-import { UploaderOptions } from "~/Model/UploaderOptions";
+import { AllUploaderOptions } from "../Model/AllUploaderOptions";
 
 const optionDefinitions: OptionDefinition[] = [
   {
-    name: "attachments",
-    alias: "a",
-    type: String,
-  },
-  {
-    name: "delimiter",
-    alias: "d",
-    type: String,
+    name: "max",
+    alias: "m",
+    type: Number,
   },
   {
     name: "storage",
@@ -29,15 +24,20 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-export const generateUploadImagesOption = (): UploaderOptions => {
+export const generateUploadAllImagesOption = (): AllUploaderOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
-  const { attachments, delimiter, storage } = options;
-  const { ATTACHMENTS } = Config.Markdown.Path;
-  const attachmentsPath = attachments
-    ? path.resolve(__dirname, `../../${attachments as string}`)
-    : ATTACHMENTS;
-  const delimiterName = delimiter ? delimiter : new Date().toISOString();
+  const { max, storage } = options;
+  if (!max) throw new Error("max: number is required");
+  const uploadTargets = Array.from({ length: max + 1 }, (_, i) => {
+    return {
+      delimiterName: String(i),
+      attachmentsPath: path.resolve(
+        __dirname,
+        `../../${Config.Markdown.EXPORTED_TEAM_NAME}-${i}/attachments`
+      ),
+    };
+  });
+  console.dir({ uploadTargets }, { depth: null });
   const storageMode: Config.Storage.Mode = storage;
-  console.log({ attachmentsPath, delimiter, storageMode });
-  return { attachmentsPath, delimiterName, storageMode };
+  return { uploadTargets, storageMode };
 };
