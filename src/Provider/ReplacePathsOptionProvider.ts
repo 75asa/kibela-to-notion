@@ -19,7 +19,7 @@ const optionDefinitions: OptionDefinition[] = [
   },
 ];
 
-export const generateImageOption = async (): Promise<ReplacerOptions> => {
+export const generateReplaceOption = async (): Promise<ReplacerOptions> => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const { notes, delimiter } = options;
   const notesPath = notes

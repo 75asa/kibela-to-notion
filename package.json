@@ -9,6 +9,7 @@
     "start:TAG_NOTES": "yarn start TAG_NOTES",
     "start:REPLACE_PATHS": "yarn start REPLACE_PATHS",
     "start:REPLACE_PATHS:Auto": "ts-node --files -r tsconfig-paths/register src/main.ts REPLACE_PATHS -n ./kibela-tambourine-${npm_config_delimiter}/notes -d ${npm_config_delimiter}",
+    "start:REPLACE_PATHS:All": "yarn start REPLACE_PATHS -m 18",
     "start:UPLOAD_IMAGES": "yarn start UPLOAD_IMAGES",
     "start:UPLOAD_IMAGES:GD": "yarn start UPLOAD_IMAGES -s GoogleDrive",
     "start:UPLOAD_IMAGES:S3": "yarn start UPLOAD_IMAGES -s S3",

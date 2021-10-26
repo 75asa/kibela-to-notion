@@ -2,8 +2,19 @@ import * as readline from "readline";
 import { Config } from "~/Config";
 import { MarkdownRepository, RedisRepository } from "~/Repository";
 
+interface PathsReplacerResult {
+  notesPath: string;
+  totalAmount: number;
+  successCount: number;
+}
+
 export class PathsReplacer {
   #successCount = 0;
+  #result: PathsReplacerResult = {
+    notesPath: this.markdownRepo.getNotesPath(),
+    totalAmount: 0,
+    successCount: 0,
+  };
   constructor(
     private markdownRepo: MarkdownRepository,
     private redisRepo: RedisRepository
@@ -11,6 +22,7 @@ export class PathsReplacer {
   async run() {
     // マークダウンの読み込み
     const allNotesPath = this.markdownRepo.getAllNotes();
+    this.#result.totalAmount = allNotesPath.length;
     for (const paths of allNotesPath) {
       const { name, fullPath } = paths;
       console.log({ name, fullPath });
@@ -49,6 +61,8 @@ export class PathsReplacer {
       writeStream.end();
       this.#successCount++;
     }
+    this.#result.successCount = this.#successCount;
     console.log({ successCount: this.#successCount });
+    return this.#result;
   }
 }

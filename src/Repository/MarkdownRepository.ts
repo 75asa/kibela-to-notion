@@ -134,4 +134,7 @@ export class MarkdownRepository {
   getAttachmentsPath() {
     return this.#attachmentsPath;
   }
+  getNotesPath() {
+    return this.#notesPath;
+  }
 }
