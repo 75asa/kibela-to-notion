@@ -5,16 +5,16 @@ import { TagOptions } from "~/Model/TaggerOptions";
 
 const optionDefinitions: OptionDefinition[] = [
   {
-    name: "path",
-    alias: "P",
+    name: "notes",
+    alias: "n",
     type: String,
   },
 ];
 
 export const generateTagOption = (): TagOptions => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
-  const notesPath = options.path
-    ? path.resolve(__dirname, options.path as string)
+  const notesPath = options.notes
+    ? path.resolve(__dirname, `../../${options.notes as string}`)
     : Config.Markdown.Path.NOTES;
   return { notesPath };
 };

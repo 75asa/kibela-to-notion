@@ -52,12 +52,14 @@ export namespace Config {
     export const DATABASE = process.env.NOTION_DATABASE!;
     export namespace Props {
       export const NAME = "Name";
-      export const PREFIX_NUMBER = "prefixNumber";
-      export const AUTHOR = "author";
-      export const CONTRIBUTORS = "contributors";
-      export const FOLDERS = "folders";
-      export const GROUPS = "groups";
-      export const COMMENTS = "comments";
+      export const PREFIX_NUMBER = "PrefixNumber";
+      export const AUTHOR = "Author";
+      export const CONTRIBUTORS = "Contributors";
+      export const FOLDERS = "Folders";
+      export const GROUPS = "Groups";
+      export const COMMENTS = "Comments";
+      export const PUBLISHED_AT = "PublishedAt"
+      export const UPDATED_AT = "UpdatedAt"
     }
   }
   export namespace Redis {

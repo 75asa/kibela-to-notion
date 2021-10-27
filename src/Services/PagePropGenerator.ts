@@ -1,4 +1,8 @@
-import { SelectOption, RichText } from "@notionhq/client/build/src/api-types";
+import {
+  SelectOption,
+  RichText,
+  DatePropertyValue,
+} from "@notionhq/client/build/src/api-types";
 import { KibelaMetaData, RedisRepository } from "~/Repository";
 import { Config } from "../Config";
 
@@ -10,6 +14,10 @@ interface UpdatePropertiesProp {
   [Props.GROUPS]: SelectOption[];
   [Props.FOLDERS]: SelectOption[];
   [Props.COMMENTS]: RichText[];
+  [Props.PUBLISHED_AT]: DatePropertyValue;
+  [Props.UPDATED_AT]: DatePropertyValue;
+  // [Props.PUBLISHED_AT]: Omit<DatePropertyValue, "id">;
+  // [Props.UPDATED_AT]: Omit<DatePropertyValue, "id">;
 }
 
 export class PagePropGenerator {
@@ -56,6 +64,17 @@ export class PagePropGenerator {
     });
   }
 
+  // #makeDatePropertyValue(id: string, isoString: string): Omit<DatePropertyValue, "id"> {
+  #makeDatePropertyValue(id: string, isoString: string): DatePropertyValue {
+    return {
+      id,
+      type: "date",
+      date: {
+        start: isoString,
+      },
+    };
+  }
+
   async invoke(): Promise<UpdatePropertiesProp> {
     const folders = await this.#getIdOrNameFromArray(
       "folders",
@@ -73,12 +92,23 @@ export class PagePropGenerator {
       "contributors",
       this.content.contributors
     );
+    // const publishedAt = this.#makeDatePropertyValue(this.content.published_at);
+    // const updatedAt = this.#makeDatePropertyValue(this.content.updated_at);
+    // const publishedAt = this.#makeDatePropertyValue(
+    //   this.content.published_at
+    // );
+    // const updatedAt = this.#makeDatePropertyValue(
+    //   this.content.updated_at
+    // );
+
     return {
       [Props.AUTHOR]: author,
       [Props.CONTRIBUTORS]: contributors,
       [Props.FOLDERS]: folders,
       [Props.GROUPS]: groups,
       [Props.COMMENTS]: this.#getComments(),
+      [Props.PUBLISHED_AT]: publishedAt,
+      [Props.UPDATED_AT]: updatedAt,
     };
   }
 }

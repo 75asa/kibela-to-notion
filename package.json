@@ -4,7 +4,6 @@
   "license": "MIT",
   "main": "src/main.ts",
   "scripts": {
-    "exec": "ts-node",
     "start": "ts-node --files -r tsconfig-paths/register src/main.ts",
     "start:TAG_NOTES": "yarn start TAG_NOTES",
     "start:REPLACE_PATHS": "yarn start REPLACE_PATHS",

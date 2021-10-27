@@ -7,3 +7,7 @@ export const parseISO8601 = (date: Date) => {
 export const parseDate = (isoString: string) => {
   return dayjs(isoString).toDate();
 };
+
+export const parseISO8601FromKibelaFormatDate = (target: string) => {
+  return dayjs(target).format();
+};
