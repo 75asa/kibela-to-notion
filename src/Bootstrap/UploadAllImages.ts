@@ -3,8 +3,7 @@ import {
   MarkdownRepository,
   IFileRepository,
   RedisRepository,
-} from "~/Repository";
-import { Config } from "~/Config";
+} from "~/Repository"; import { Config } from "~/Config";
 import { GoogleDriveRepository, S3Repository } from "../Infra";
 import { generateUploadAllImagesOption } from "../Provider/UploadAllImagesOptionProvider";
 
@@ -35,6 +34,5 @@ export const UploadAllImages = async () => {
       ).run();
     })
   );
-
   console.dir({ allResult }, { depth: null });
 };

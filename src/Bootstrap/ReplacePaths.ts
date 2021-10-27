@@ -1,12 +1,12 @@
 import { PathsReplacer } from "~/Controller/PathsReplacer";
-import { generateImageOption } from "~/Provider/ReplacePathsOptionProvider";
+import { generateReplaceOption } from "~/Provider/ReplacePathsOptionProvider";
 import { MarkdownRepository, RedisRepository } from "~/Repository";
 import { Config } from "~/Config";
 
 const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
 
 export const ReplacePaths = async () => {
-  const { notesPath, outPath } = await generateImageOption();
+  const { notesPath, outPath } = await generateReplaceOption();
   await new PathsReplacer(
     new MarkdownRepository({ notesPath, outPath }),
     new RedisRepository({
