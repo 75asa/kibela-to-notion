@@ -48,10 +48,10 @@ export class PathsReplacer {
           const fileURL = await this.redisRepo.getKey(
             `${fileName}.${mineType}`
           );
-          console.log({ name, line, src, fileName, fileURL });
+          console.log({ name, paths, line, src, fileName, fileURL });
           if (!fileURL) {
             throw new Error(
-              `${fileName}.${mineType} is not found on local Redis db: #1`
+              `${fileName}.${mineType} is not found on local Redis db: #0`
             );
           }
           line = line.replace(src, fileURL);

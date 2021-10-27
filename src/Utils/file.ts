@@ -16,6 +16,7 @@ export const mkdir = async (filepath: string) => {
     const result = await fsPromises.mkdir(filepath, { recursive: true });
     if (!result) throw new Error("Failed to create directory");
   } catch (error) {
+    console.error({ error, filepath });
     throw error;
   }
 };
