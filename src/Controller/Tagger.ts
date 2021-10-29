@@ -37,7 +37,7 @@ export class Tagger {
       }).invoke();
       if (!updatedPage) continue;
       if (updatedPage) this.#successCount++;
-      new PropStore({
+      await new PropStore({
         propValueMap: updatedPage.properties,
         redisRepo: this.#redisRepo,
       }).invoke();

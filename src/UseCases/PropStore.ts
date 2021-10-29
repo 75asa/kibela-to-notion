@@ -14,8 +14,9 @@ export class PropStore {
     propValueMap: PropertyValueMap;
     redisRepo: RedisRepository;
   }) {
-    this.#propValueMap = arg.propValueMap;
-    this.#redisRepo = arg.redisRepo;
+    const { propValueMap, redisRepo } = arg;
+    this.#propValueMap = propValueMap;
+    this.#redisRepo = redisRepo;
   }
 
   async invoke() {

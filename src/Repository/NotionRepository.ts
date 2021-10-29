@@ -50,6 +50,7 @@ export class NotionRepository {
   }
 
   async updatePage(page: Page, updateProps: any, redisRepo: RedisRepository) {
+    console.dir({ page, updateProps }, { depth: null });
     try {
       return await this.notion.pages.update({
         page_id: page.id,
