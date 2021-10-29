@@ -5,19 +5,18 @@ import {
 } from "@notionhq/client/build/src/api-types";
 import { KibelaMetaData, RedisRepository } from "~/Repository";
 import { Config } from "../Config";
+import { parseISO8601FromKibelaFormatDate } from "../Utils";
 
 const Props = Config.Notion.Props;
 
 interface UpdatePropertiesProp {
-  [Props.AUTHOR]: SelectOption;
-  [Props.CONTRIBUTORS]: SelectOption[];
-  [Props.GROUPS]: SelectOption[];
-  [Props.FOLDERS]: SelectOption[];
-  [Props.COMMENTS]: RichText[];
-  [Props.PUBLISHED_AT]: DatePropertyValue;
-  [Props.UPDATED_AT]: DatePropertyValue;
-  // [Props.PUBLISHED_AT]: Omit<DatePropertyValue, "id">;
-  // [Props.UPDATED_AT]: Omit<DatePropertyValue, "id">;
+  [Props.AUTHOR]: { select: SelectOption };
+  [Props.CONTRIBUTORS]: { multi_select: SelectOption[] };
+  [Props.GROUPS]: { multi_select: SelectOption[] };
+  [Props.FOLDERS]: { multi_select: SelectOption[] };
+  [Props.COMMENTS]: { rich_text: RichText[] };
+  [Props.PUBLISHED_AT]: Omit<DatePropertyValue, "id">;
+  [Props.UPDATED_AT]: Omit<DatePropertyValue, "id">;
 }
 
 export class PagePropGenerator {
@@ -64,13 +63,11 @@ export class PagePropGenerator {
     });
   }
 
-  // #makeDatePropertyValue(id: string, isoString: string): Omit<DatePropertyValue, "id"> {
-  #makeDatePropertyValue(id: string, isoString: string): DatePropertyValue {
+  #makeDatePropertyValue(kibelaFormatDate: string): Omit<DatePropertyValue, "id"> {
     return {
-      id,
       type: "date",
       date: {
-        start: isoString,
+        start: parseISO8601FromKibelaFormatDate(kibelaFormatDate),
       },
     };
   }
@@ -92,21 +89,16 @@ export class PagePropGenerator {
       "contributors",
       this.content.contributors
     );
-    // const publishedAt = this.#makeDatePropertyValue(this.content.published_at);
-    // const updatedAt = this.#makeDatePropertyValue(this.content.updated_at);
-    // const publishedAt = this.#makeDatePropertyValue(
-    //   this.content.published_at
-    // );
-    // const updatedAt = this.#makeDatePropertyValue(
-    //   this.content.updated_at
-    // );
+    const publishedAt = this.#makeDatePropertyValue(this.content.published_at);
+    const updatedAt = this.#makeDatePropertyValue(this.content.updated_at);
+    const comments = this.#getComments();
 
     return {
-      [Props.AUTHOR]: author,
-      [Props.CONTRIBUTORS]: contributors,
-      [Props.FOLDERS]: folders,
-      [Props.GROUPS]: groups,
-      [Props.COMMENTS]: this.#getComments(),
+      [Props.AUTHOR]: { select: author },
+      [Props.CONTRIBUTORS]: { multi_select: contributors },
+      [Props.FOLDERS]: { multi_select: folders },
+      [Props.GROUPS]: { multi_select: groups },
+      [Props.COMMENTS]: { rich_text: comments },
       [Props.PUBLISHED_AT]: publishedAt,
       [Props.UPDATED_AT]: updatedAt,
     };
