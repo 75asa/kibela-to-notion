@@ -1,13 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import { Config } from "~/Config";
 
-const {
-  REPLACE_PATHS,
-  REPLACE_ALL_PATHS,
-  TAG_NOTES,
-  UPLOAD_IMAGES,
-  UPLOAD_ALL_IMAGES,
-} = Config.Mode;
+const { REPLACE_PATHS, TAG_NOTES, UPLOAD_IMAGES } = Config.Mode;
 const optionDefinitions: OptionDefinition[] = [
   {
     name: "mode",
@@ -18,17 +12,16 @@ const optionDefinitions: OptionDefinition[] = [
 
 export const provideOptions = ():
   | typeof REPLACE_PATHS
-  | typeof REPLACE_ALL_PATHS
   | typeof TAG_NOTES
-  | typeof UPLOAD_IMAGES
-  | typeof UPLOAD_ALL_IMAGES => {
+  | typeof UPLOAD_IMAGES => {
   const options = commandLineArgs(optionDefinitions, { partial: true });
   const mode = options.mode;
   if (!mode) {
-    throw new Error(
-      `mode is required and must be "${REPLACE_PATHS}" or "${TAG_NOTES}".\n
-      your command line args: ${JSON.stringify(options, null, 2)}`
-    );
+    throw new Error("No mode provided");
+  }
+
+  if (!Object.values(Config.Mode).includes(mode)) {
+    throw new Error(`Invalid mode: ${mode}`);
   }
 
   return mode;

@@ -1,7 +1,7 @@
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import path from "path";
 import { Config } from "~/Config";
-import { TagOptions } from "~/Model/TaggerOptions";
+import { TaggerOptions } from "~/Model/TaggerOptions";
 
 const optionDefinitions: OptionDefinition[] = [
   {
@@ -9,12 +9,28 @@ const optionDefinitions: OptionDefinition[] = [
     alias: "n",
     type: String,
   },
+  {
+    name: "max",
+    alias: "m",
+    type: Number,
+  },
 ];
 
-export const generateTagOption = (): TagOptions => {
-  const options = commandLineArgs(optionDefinitions, { partial: true });
-  const notesPath = options.notes
-    ? path.resolve(__dirname, `../../${options.notes as string}`)
+export const generateTagOption = (): TaggerOptions[] => {
+  const { notes, max } = commandLineArgs(optionDefinitions, { partial: true });
+
+  if (max) {
+    return Array.from({ length: max + 1 }, (_, i) => {
+      return {
+        notesPath: path.resolve(
+          __dirname,
+          `../../${Config.Markdown.Path.OUT}/${i}/`
+        ),
+      };
+    });
+  }
+  const notesPath = notes
+    ? path.resolve(__dirname, `../../${notes as string}`)
     : Config.Markdown.Path.NOTES;
-  return { notesPath };
+  return [{ notesPath }];
 };
