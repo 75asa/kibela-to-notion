@@ -23,6 +23,27 @@
       }
     },
     {
+      "name": "start:TAG_NOTES:all",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": ["${workspaceFolder}/src/main.ts", "TAG_NOTES", "-m", "18"],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
+    },
+    {
       "name": "start:REPLACE_PATHS",
       "request": "launch",
       "type": "node",
@@ -33,10 +54,6 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      // "args": [
-      //   "${workspaceFolder}/src/main.ts",
-      //   "REPLACE_PATHS",
-      // for Debug
       "args": [
         "${workspaceFolder}/src/main.ts",
         "REPLACE_PATHS",
@@ -56,7 +73,34 @@
       }
     },
     {
-      "name": "start:UPLOAD_IMAGES",
+      "name": "start:REPLACE_PATHS:all",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/main.ts",
+        "REPLACE_PATHS",
+        "-m",
+        "18"
+      ],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
+    },
+    {
+      "name": "start:UPLOAD_IMAGES:GD:all",
       "request": "launch",
       "type": "node",
       "runtimeArgs": [
@@ -65,17 +109,37 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      // "args": ["${workspaceFolder}/src/main.ts", "UPLOAD_IMAGES",],
-      // for DEBUG
       "args": [
         "${workspaceFolder}/src/main.ts",
-        "UPLOAD_IMAGES",
-        "-d",
-        "1",
-        "-a",
-        "./kibela-tambourine-1/attachments/",
-        "-s",
-        "GoogleDrive"
+        "UPLOAD_IMAGES:GD",
+        "-m",
+        "18"
+      ],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "tsconfig.json",
+        "TS_NODE_TRANSPILE_ONLY": "true"
+      }
+    },
+    {
+      "name": "start:UPLOAD_IMAGES:S3:all",
+      "request": "launch",
+      "type": "node",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/node_modules/ts-node/register",
+        "-r",
+        "${workspaceFolder}/node_modules/tsconfig-paths/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/main.ts",
+        "UPLOAD_IMAGES:S3",
+        "-m",
+        "18"
       ],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
