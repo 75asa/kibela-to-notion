@@ -6,11 +6,13 @@ import {
   RedisRepository,
   NotionRepository,
 } from "~/Repository";
+import { ConcurrencyLock } from "../Utils";
 
 const { SHOW_FRIENDLY_ERROR_STACK, NO_DELAY, DB } = Config.Redis;
 
 export const Tag = async () => {
   const options = generateTagOption();
+  const lock = new ConcurrencyLock({ concurrency: 3, interval: 2000 });
   const allResult = await Promise.all(
     options.map(async option => {
       const { notesPath } = option;
@@ -23,7 +25,10 @@ export const Tag = async () => {
         }),
         notionRepo: new NotionRepository(Config.Notion.KEY),
       });
-      return await tagger.run();
+      return await lock.run(async () => {
+        return await tagger.run();
+      });
+      // return await tagger.run();
     })
   );
   console.dir({ allResult }, { depth: null });
