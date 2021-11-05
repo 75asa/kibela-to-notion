@@ -103,15 +103,17 @@ export class MarkdownRepository {
     );
   }
 
-  getAllMeta() {
-    return this.getAllNotes().map(file => {
-      const meta = this.#parseMeta(file.fullPath);
-      const prefixNumber = Number(file.name.split("-")[0]);
-      return {
-        prefixNumber,
-        meta,
-      };
-    });
+  async getAllMeta() {
+    return await Promise.all(
+      this.getAllNotes().map(async file => {
+        const meta = this.#parseMeta(file.fullPath);
+        const prefixNumber = Number(file.name.split("-")[0]);
+        return Promise.resolve({
+          prefixNumber,
+          meta,
+        });
+      })
+    );
   }
 
   createReadFileStream(arg: { path: string; encoding?: BufferEncoding }) {

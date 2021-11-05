@@ -14,7 +14,7 @@ export const Tag = async () => {
   const allResult = await Promise.all(
     options.map(async option => {
       const { notesPath } = option;
-      return await new Tagger({
+      const tagger = await Tagger.factory({
         markdownRepo: new MarkdownRepository({ notesPath }),
         redisRepo: new RedisRepository({
           showFriendlyErrorStack: SHOW_FRIENDLY_ERROR_STACK,
@@ -22,7 +22,8 @@ export const Tag = async () => {
           db: DB.TAG,
         }),
         notionRepo: new NotionRepository(Config.Notion.KEY),
-      }).run();
+      });
+      return await tagger.run();
     })
   );
   console.dir({ allResult }, { depth: null });

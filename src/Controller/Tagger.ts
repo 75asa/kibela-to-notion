@@ -2,26 +2,41 @@ import {
   MarkdownRepository,
   RedisRepository,
   NotionRepository,
+  KibelaMetaData,
 } from "~/Repository";
 import { PageFilter, PageTag, PropStore } from "~/UseCases";
 
 export class Tagger {
-  #markdownRepo: MarkdownRepository;
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
   #successCount: number;
-  #allMetaData;
-  constructor(args: {
+  #allMetaData: {
+    prefixNumber: number;
+    meta: KibelaMetaData;
+  }[];
+  private constructor(args: {
+    redisRepo: RedisRepository;
+    notionRepo: NotionRepository;
+  }) {
+    const { redisRepo, notionRepo } = args;
+    this.#notionRepo = notionRepo;
+    this.#redisRepo = redisRepo;
+    this.#allMetaData = [];
+    this.#successCount = 0;
+  }
+
+  static async factory(args: {
     markdownRepo: MarkdownRepository;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
     const { markdownRepo, redisRepo, notionRepo } = args;
-    this.#notionRepo = notionRepo;
-    this.#markdownRepo = markdownRepo;
-    this.#allMetaData = this.#markdownRepo.getAllMeta();
-    this.#redisRepo = redisRepo;
-    this.#successCount = 0;
+    const instance = new Tagger({
+      redisRepo,
+      notionRepo,
+    });
+    instance.#allMetaData = await markdownRepo.getAllMeta();
+    return instance;
   }
 
   async run() {
