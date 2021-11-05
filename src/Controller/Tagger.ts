@@ -9,18 +9,19 @@ export class Tagger {
   #markdownRepo: MarkdownRepository;
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
-  #successCount = 0;
+  #successCount: number;
   #allMetaData;
-  constructor(arg: {
+  constructor(args: {
     markdownRepo: MarkdownRepository;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    const { markdownRepo, redisRepo, notionRepo } = arg;
+    const { markdownRepo, redisRepo, notionRepo } = args;
     this.#notionRepo = notionRepo;
     this.#markdownRepo = markdownRepo;
     this.#allMetaData = this.#markdownRepo.getAllMeta();
     this.#redisRepo = redisRepo;
+    this.#successCount = 0;
   }
 
   async run() {

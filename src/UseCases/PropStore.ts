@@ -10,11 +10,11 @@ export class PropStore {
     Config.Notion.Props.PREFIX_NUMBER,
   ];
   #redisRepo: RedisRepository;
-  constructor(arg: {
+  constructor(args: {
     propValueMap: PropertyValueMap;
     redisRepo: RedisRepository;
   }) {
-    const { propValueMap, redisRepo } = arg;
+    const { propValueMap, redisRepo } = args;
     this.#propValueMap = propValueMap;
     this.#redisRepo = redisRepo;
   }

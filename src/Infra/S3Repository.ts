@@ -12,14 +12,14 @@ export class S3Repository implements IFileRepository {
   #BUCKET_NAME;
   #delimiter;
 
-  private constructor(input: {
+  private constructor(args: {
     ID: string;
     SECRET: string;
     REGION: string;
     BUCKET_NAME: string;
     delimiter: string;
   }) {
-    const { ID, SECRET, REGION, BUCKET_NAME, delimiter } = input;
+    const { ID, SECRET, REGION, BUCKET_NAME, delimiter } = args;
     this.#BUCKET_NAME = BUCKET_NAME;
     this.#delimiter = delimiter;
     this.#s3client = new S3Client({

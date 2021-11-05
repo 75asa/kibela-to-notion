@@ -8,13 +8,13 @@ export class PageTag {
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
   #allMetaData;
-  constructor(arg: {
+  constructor(args: {
     page: Page;
     allMetaData: AllMetaData;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    const { page, allMetaData, redisRepo, notionRepo } = arg;
+    const { page, allMetaData, redisRepo, notionRepo } = args;
     this.#page = page;
     this.#allMetaData = allMetaData;
     this.#redisRepo = redisRepo;

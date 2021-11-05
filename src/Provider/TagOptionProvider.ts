@@ -22,10 +22,7 @@ export const generateTagOption = (): TaggerOptions[] => {
   if (max) {
     return Array.from({ length: max + 1 }, (_, i) => {
       return {
-        notesPath: path.resolve(
-          __dirname,
-          `../../${Config.Markdown.Path.OUT}/${i}/`
-        ),
+        notesPath: path.join(Config.Markdown.Path.OUT, String(i)),
       };
     });
   }

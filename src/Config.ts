@@ -7,7 +7,6 @@ if (config) {
   for (const key in config) {
     process.env[key] = config[key];
   }
-  console.log("all env vars loading done");
 }
 
 export namespace Config {
