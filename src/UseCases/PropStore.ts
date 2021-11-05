@@ -2,14 +2,12 @@ import { PropertyValueMap } from "@notionhq/client/build/src/api-endpoints";
 import { Config } from "~/Config";
 import { RedisRepository } from "~/Repository";
 
+const { NAME, COMMENTS, PREFIX_NUMBER } = Config.Notion.Props;
+
 export class PropStore {
   #propValueMap: PropertyValueMap;
-  #IGNORE_PROP_NAMES = [
-    Config.Notion.Props.NAME,
-    Config.Notion.Props.COMMENTS,
-    Config.Notion.Props.PREFIX_NUMBER,
-  ];
   #redisRepo: RedisRepository;
+  #IGNORE_PROP_NAMES = [NAME, COMMENTS, PREFIX_NUMBER];
   constructor(args: {
     propValueMap: PropertyValueMap;
     redisRepo: RedisRepository;

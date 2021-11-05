@@ -10,21 +10,37 @@ const optionDefinitions: OptionDefinition[] = [
     type: String,
   },
   {
-    name: "max",
+    name: "maxNumber",
     alias: "m",
+    type: Number,
+  },
+  {
+    name: "startNumber",
+    alias: "s",
     type: Number,
   },
 ];
 
 export const generateTagOption = (): TaggerOptions[] => {
-  const { notes, max } = commandLineArgs(optionDefinitions, { partial: true });
+  const { notes, startNumber, maxNumber } = commandLineArgs(optionDefinitions, {
+    partial: true,
+  });
 
-  if (max) {
-    return Array.from({ length: max + 1 }, (_, i) => {
+  if (maxNumber !== undefined && startNumber === undefined) {
+    return Array.from({ length: maxNumber + 1 }, (_, i) => {
       return {
         notesPath: path.join(Config.Markdown.Path.OUT, String(i)),
       };
     });
+  } else if (maxNumber !== undefined && startNumber !== undefined) {
+    return Array.from({ length: startNumber + 1 }, (_, i) => {
+      if (i > maxNumber) return;
+      return {
+        notesPath: path.join(Config.Markdown.Path.OUT, String(i)),
+      };
+    }).filter(
+      (item): item is Exclude<typeof item, undefined> => item !== undefined
+    );
   }
   const notesPath = notes
     ? path.resolve(__dirname, `../../${notes as string}`)

@@ -32,7 +32,7 @@ export class PageTag {
       metaData.meta,
       this.#redisRepo
     ).invoke();
-    console.dir({ updateProps }, { depth: null });
+    // console.dir({ updateProps }, { depth: null });
     return await this.#notionRepo
       .updatePage(this.#page, updateProps, this.#redisRepo)
       .catch(err => {

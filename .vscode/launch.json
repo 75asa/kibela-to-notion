@@ -32,7 +32,8 @@
         "-r",
         "${workspaceFolder}/node_modules/tsconfig-paths/register"
       ],
-      "args": ["${workspaceFolder}/src/main.ts", "TAG_NOTES", "-m", "18"],
+      // "args": ["${workspaceFolder}/src/main.ts", "TAG_NOTES", "-m", "18"],
+      "args": ["${workspaceFolder}/src/main.ts", "TAG_NOTES", "-m", "0"],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
       "console": "integratedTerminal",
