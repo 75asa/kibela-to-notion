@@ -27,11 +27,30 @@ const optionDefinitions: OptionDefinition[] = [
       }
     },
   },
+  {
+    name: "max",
+    alias: "m",
+    type: Number,
+  },
 ];
 
-export const generateUploadImagesOption = (): UploaderOptions => {
-  const options = commandLineArgs(optionDefinitions, { partial: true });
-  const { attachments, delimiter, storage } = options;
+export const generateUploadImagesOption = (): UploaderOptions[] => {
+  const { attachments, delimiter, storage, max } = commandLineArgs(
+    optionDefinitions,
+    { partial: true }
+  );
+  if (max) {
+    return Array.from({ length: max + 1 }, (_, i) => {
+      return {
+        delimiterName: String(i),
+        attachmentsPath: path.resolve(
+          __dirname,
+          `../../${Config.Markdown.EXPORTED_TEAM_NAME}-${i}/attachments`
+        ),
+        storageMode: storage,
+      };
+    });
+  }
   const { ATTACHMENTS } = Config.Markdown.Path;
   const attachmentsPath = attachments
     ? path.resolve(__dirname, `../../${attachments as string}`)
@@ -39,5 +58,5 @@ export const generateUploadImagesOption = (): UploaderOptions => {
   const delimiterName = delimiter ? delimiter : new Date().toISOString();
   const storageMode: Config.Storage.Mode = storage;
   console.log({ attachmentsPath, delimiter, storageMode });
-  return { attachmentsPath, delimiterName, storageMode };
+  return [{ attachmentsPath, delimiterName, storageMode }];
 };

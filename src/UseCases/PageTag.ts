@@ -8,13 +8,13 @@ export class PageTag {
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
   #allMetaData;
-  constructor(arg: {
+  constructor(args: {
     page: Page;
     allMetaData: AllMetaData;
     redisRepo: RedisRepository;
     notionRepo: NotionRepository;
   }) {
-    const { page, allMetaData, redisRepo, notionRepo } = arg;
+    const { page, allMetaData, redisRepo, notionRepo } = args;
     this.#page = page;
     this.#allMetaData = allMetaData;
     this.#redisRepo = redisRepo;
@@ -32,7 +32,7 @@ export class PageTag {
       metaData.meta,
       this.#redisRepo
     ).invoke();
-    console.dir({ updateProps }, { depth: null });
+    // console.dir({ updateProps }, { depth: null });
     return await this.#notionRepo
       .updatePage(this.#page, updateProps, this.#redisRepo)
       .catch(err => {

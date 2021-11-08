@@ -7,16 +7,13 @@ if (config) {
   for (const key in config) {
     process.env[key] = config[key];
   }
-  console.log("all env vars loading done");
 }
 
 export namespace Config {
   export namespace Mode {
     export const REPLACE_PATHS = "REPLACE_PATHS";
-    export const REPLACE_ALL_PATHS = "REPLACE_ALL_PATHS";
     export const TAG_NOTES = "TAG_NOTES";
     export const UPLOAD_IMAGES = "UPLOAD_IMAGES";
-    export const UPLOAD_ALL_IMAGES = "UPLOAD_ALL_IMAGES";
   }
 
   export namespace Markdown {

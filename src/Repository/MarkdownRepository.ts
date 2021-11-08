@@ -45,12 +45,12 @@ export class MarkdownRepository {
   #notesPath: string;
   #attachmentsPath: string;
   #outPath: string;
-  constructor(input: {
+  constructor(args: {
     notesPath?: string;
     attachmentsPath?: string;
     outPath?: string;
   }) {
-    const { notesPath, attachmentsPath, outPath } = input;
+    const { notesPath, attachmentsPath, outPath } = args;
     this.#notesPath = notesPath || "";
     this.#attachmentsPath = attachmentsPath || "";
     this.#outPath = outPath || "";
@@ -58,10 +58,10 @@ export class MarkdownRepository {
 
   #parseMeta(fileName: string) {
     const file = fs.readFileSync(fileName, ENCODING);
-    console.log({ file });
+    // console.log({ file });
     const result = metaDataParser(file) as ParsedResultProps;
     const metaData = result.metadata as KibelaMetaData;
-    console.dir(metaData);
+    // console.dir(metaData);
     return metaData;
   }
 
@@ -103,15 +103,17 @@ export class MarkdownRepository {
     );
   }
 
-  getAllMeta() {
-    return this.getAllNotes().map(file => {
-      const meta = this.#parseMeta(file.fullPath);
-      const prefixNumber = Number(file.name.split("-")[0]);
-      return {
-        prefixNumber,
-        meta,
-      };
-    });
+  async getAllMeta() {
+    return await Promise.all(
+      this.getAllNotes().map(async file => {
+        const meta = this.#parseMeta(file.fullPath);
+        const prefixNumber = Number(file.name.split("-")[0]);
+        return Promise.resolve({
+          prefixNumber,
+          meta,
+        });
+      })
+    );
   }
 
   createReadFileStream(arg: { path: string; encoding?: BufferEncoding }) {
@@ -125,7 +127,7 @@ export class MarkdownRepository {
   createWriteFileStream(arg: { path: string; encoding?: BufferEncoding }) {
     const { path, encoding } = arg;
     const finalPath = `${this.#outPath}/${path}`;
-    console.log({ finalPath });
+    // console.log({ finalPath });
     return fs.createWriteStream(`${this.#outPath}/${path}`, {
       encoding,
       highWaterMark: 64 * 10,

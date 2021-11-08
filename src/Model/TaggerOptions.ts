@@ -1,3 +1,3 @@
-export interface TagOptions {
+export interface TaggerOptions {
   notesPath: string;
 }
