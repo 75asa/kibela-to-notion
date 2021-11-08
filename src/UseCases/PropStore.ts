@@ -4,15 +4,15 @@ import { RedisRepository } from "~/Repository";
 
 const { NAME, COMMENTS, PREFIX_NUMBER } = Config.Notion.Props;
 
+interface PropStoreArgs {
+  propValueMap: PropertyValueMap;
+  redisRepo: RedisRepository;
+}
 export class PropStore {
   #propValueMap: PropertyValueMap;
   #redisRepo: RedisRepository;
   #IGNORE_PROP_NAMES = [NAME, COMMENTS, PREFIX_NUMBER];
-  constructor(args: {
-    propValueMap: PropertyValueMap;
-    redisRepo: RedisRepository;
-  }) {
-    const { propValueMap, redisRepo } = args;
+  constructor({ propValueMap, redisRepo }: PropStoreArgs) {
     this.#propValueMap = propValueMap;
     this.#redisRepo = redisRepo;
   }

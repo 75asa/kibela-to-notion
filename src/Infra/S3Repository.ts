@@ -7,19 +7,26 @@ import { v4 as UUIDv4 } from "uuid";
 import { Config } from "~/Config";
 import { IFileRepository } from "../Repository/FileRepository";
 
+interface S3RepositoryArgs {
+  ID: string;
+  SECRET: string;
+  REGION: string;
+  BUCKET_NAME: string;
+  delimiter: string;
+}
+
 export class S3Repository implements IFileRepository {
   #s3client;
   #BUCKET_NAME;
   #delimiter;
 
-  private constructor(args: {
-    ID: string;
-    SECRET: string;
-    REGION: string;
-    BUCKET_NAME: string;
-    delimiter: string;
-  }) {
-    const { ID, SECRET, REGION, BUCKET_NAME, delimiter } = args;
+  private constructor({
+    ID,
+    SECRET,
+    REGION,
+    BUCKET_NAME,
+    delimiter,
+  }: S3RepositoryArgs) {
     this.#BUCKET_NAME = BUCKET_NAME;
     this.#delimiter = delimiter;
     this.#s3client = new S3Client({

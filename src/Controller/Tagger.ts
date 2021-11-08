@@ -17,6 +17,12 @@ interface TaggerResult {
   };
 }
 
+interface TaggerArgs {
+  markdownRepo: MarkdownRepository;
+  redisRepo: RedisRepository;
+  notionRepo: NotionRepository;
+}
+
 export class Tagger {
   #redisRepo: RedisRepository;
   #notionRepo: NotionRepository;
@@ -25,12 +31,7 @@ export class Tagger {
     meta: KibelaMetaData;
   }[];
   #result: TaggerResult;
-  private constructor(args: {
-    markdownRepo: MarkdownRepository;
-    redisRepo: RedisRepository;
-    notionRepo: NotionRepository;
-  }) {
-    const { redisRepo, notionRepo, markdownRepo } = args;
+  private constructor({ markdownRepo, redisRepo, notionRepo }: TaggerArgs) {
     this.#notionRepo = notionRepo;
     this.#redisRepo = redisRepo;
     this.#allMetaData = [];
@@ -46,12 +47,7 @@ export class Tagger {
     };
   }
 
-  static async factory(args: {
-    markdownRepo: MarkdownRepository;
-    redisRepo: RedisRepository;
-    notionRepo: NotionRepository;
-  }) {
-    const { markdownRepo, redisRepo, notionRepo } = args;
+  static async factory({ markdownRepo, redisRepo, notionRepo }: TaggerArgs) {
     const instance = new Tagger({
       markdownRepo,
       redisRepo,

@@ -41,16 +41,17 @@ interface ParsedResultProps {
   };
 }
 
+interface MarkdownRepositoryArgs {
+  notesPath?: string;
+  attachmentsPath?: string;
+  outPath?: string;
+}
+
 export class MarkdownRepository {
   #notesPath: string;
   #attachmentsPath: string;
   #outPath: string;
-  constructor(args: {
-    notesPath?: string;
-    attachmentsPath?: string;
-    outPath?: string;
-  }) {
-    const { notesPath, attachmentsPath, outPath } = args;
+  constructor({ notesPath, attachmentsPath, outPath }: MarkdownRepositoryArgs) {
     this.#notesPath = notesPath || "";
     this.#attachmentsPath = attachmentsPath || "";
     this.#outPath = outPath || "";
