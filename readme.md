@@ -24,14 +24,30 @@ This is a useful migration tool for migrating articles from [Kibela](https://kib
 1. `$ yarn start`
 
 ## 1. Upload All Images
+
 1st, you must choose a storage destination. S3 or Google Drive.
-if detected, you run `$ yarn start:UPLOAD_IMAGES`
+if detected, you run `$ yarn start:UPLOAD_IMAGES:S3 -m ${n}` or `$ yarn start:UPLOAD_IMAGES:GD -m ${n}`.
+the command line args are `-m ${n}` means your downloaded local archives max numbers. e.g. your DL archives is kibela-tambourine-1...18, `-m 18`.
+And detecting storage is highly recommended to Google Drive for security reason.
 
 ## 2. Replace All image paths
 
+2nd, your must replace all attachments path in your downloaded markdown files.
+run this command `$ yarn start:REPLACE_PATHS -m ${n}`
+
 ## 3. Import All Notes by Notion default import
 
-## 4. Tag All using by local Markdown YAML tags
+3rd, you can import all notes by Notion default import.
+Sometimes, Importing is failed by Notion importing limit or validation. if you encounter this, you must fix it manually.
+
+## 4. Move all imported markdown files to a Notion Database.
+
+4th, you can manually move all imported markdown files to a Notion Database.
+
+## 5. Tag All using by local Markdown YAML tags
+
+It's final step ! you can tag all imported notes by local markdown YAML configs.
+run this command `$ yarn start -m ${n}`
 
 # Caution
 
