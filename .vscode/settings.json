@@ -1,0 +1,27 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#f3e9a8",
+        "activityBar.activeBorder": "#17a895",
+        "activityBar.background": "#f3e9a8",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#17a895",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#edde7b",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#e7d34e",
+        "titleBar.activeBackground": "#edde7b",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#edde7b99",
+        "titleBar.inactiveForeground": "#15202b99",
+        "sash.hoverBorder": "#f3e9a8",
+        "statusBarItem.remoteBackground": "#edde7b",
+        "statusBarItem.remoteForeground": "#15202b"
+    },
+    "peacock.color": "#edde7b",
+    "cSpell.words": [
+        "coediting",
+        "sadd"
+    ],
+    "jest.jestCommandLine": "test"
+}

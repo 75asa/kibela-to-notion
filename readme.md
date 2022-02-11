@@ -4,7 +4,6 @@ This is a useful migration tool for migrating articles from [Kibela](https://kib
 
 ![Kibela archive: sample](https://i.gyazo.com/d0fc3c24bda1aca74b7feef40e5f8662.png)
 
-
 # How to use it ?
 
 1. export all Kibela file (needs a owner privilege)
@@ -24,6 +23,32 @@ This is a useful migration tool for migrating articles from [Kibela](https://kib
 1. You can select S3 or Google Drive as the image storage destination
 1. `$ yarn start`
 
+## 1. Upload All Images
+
+1st, you must choose a storage destination. S3 or Google Drive.
+if detected, you run `$ yarn start:UPLOAD_IMAGES:S3 -m ${n}` or `$ yarn start:UPLOAD_IMAGES:GD -m ${n}`.
+the command line args are `-m ${n}` means your downloaded local archives max numbers. e.g. your DL archives is kibela-tambourine-1...18, `-m 18`.
+And detecting storage is highly recommended to Google Drive for security reason.
+
+## 2. Replace All image paths
+
+2nd, your must replace all attachments path in your downloaded markdown files.
+run this command `$ yarn start:REPLACE_PATHS -m ${n}`
+
+## 3. Import All Notes by Notion default import
+
+3rd, you can import all notes by Notion default import.
+Sometimes, Importing is failed by Notion importing limit or validation. if you encounter this, you must fix it manually.
+
+## 4. Move all imported markdown files to a Notion Database.
+
+4th, you can manually move all imported markdown files to a Notion Database.
+
+## 5. Tag All using by local Markdown YAML tags
+
+It's final step ! you can tag all imported notes by local markdown YAML configs.
+run this command `$ yarn start -m ${n}`
+
 # Caution
 
 This tool was created when Notion API ver `2021-05-13` was released.
@@ -35,18 +60,15 @@ There are many limitations.
 Kibela's export data exports images and markdowns separately
 And images in the text are specified as relative paths
 
-
 ![](https://i.gyazo.com/9badb7575781fd63ab681ce8da88b739.png)
 
 e.g. `1-hoge.md` inline image
 
 ```markdown
-
 ## about hoge
 
 <img title='hoge-1.jpg' src='../attachments/10.jpg' width="500" data-meta='{"width":500,"height":471}'>
 ```
-
 
 Currently (2021/12/02), Notion does not support images with relative paths in the text as import targets.
 The image in the statement must be an external URL.
